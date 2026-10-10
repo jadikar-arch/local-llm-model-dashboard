@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "category": "Electronics",
+      "sales": 25000,
+      "region": "North"
+    },
+    {
+      "category": "Clothing",
+      "sales": 18000,
+      "region": "South"
+    },
+    {
+      "category": "Home",
+      "sales": 12000,
+      "region": "East"
+    },
+    {
+      "category": "Toys",
+      "sales": 9000,
+      "region": "West"
+    }
+  ]
+}

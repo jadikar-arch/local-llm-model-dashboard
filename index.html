@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Dashboard Name</h1>
+        <nav>
+            <button id="darkModeToggle">🌙</button>
+        </nav>
+    </header>
+
+    <main>
+        <aside>
+            <!-- Filters/Controls go here -->
+            <div id="controls">
+                <label for="dataFilter">Filter Data:</label>
+                <input type="range" id="dataFilter" min="0" max="100" value="100">
+                <button id="resetFilter">Reset</button>
+            </div>
+
+            <div id="navigation">
+                <h3>Dashboard Navigation</h3>
+                <ul>
+                    <li><a href="index.html" class="active">Main Dashboard</a></li>
+                    <li><a href="dashboards/dutch-stats-dashboard.html">Dutch Stats Dashboard</a></li>
+                    <li><a href="dashboards/cbs-dashboard.html">CBS Dashboard</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <div id="chartContainer">
+            <!-- Charts will appear here -->
+            <canvas id="mainChart"></canvas>
+            <canvas id="categoryChart"></canvas>
+            <canvas id="regionChart"></canvas>
+        </div>
+    </main>
+
+    <footer>
+        <p>Dashboard v1.0 | 🤖 Generated with Ollama + Claude Code</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

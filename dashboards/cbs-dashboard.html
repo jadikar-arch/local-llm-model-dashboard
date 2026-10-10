@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBS Dashboard</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>CBS Dashboard</h1>
+        <nav>
+            <button id="darkModeToggle">🌙</button>
+        </nav>
+    </header>
+
+    <main>
+        <aside>
+            <!-- Filters/Controls go here -->
+            <div id="controls">
+                <h3>Filters</h3>
+                <label for="cbsYearFilter">Select Year:</label>
+                <select id="cbsYearFilter">
+                    <option value="all">All Years</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                </select>
+
+                <label for="cbsMetricFilter">Select Metric:</label>
+                <select id="cbsMetricFilter">
+                    <option value="all">All Metrics</option>
+                    <option value="population">Population</option>
+                    <option value="employment">Employment Rate</option>
+                </select>
+
+                <button id="applyCBSFilters">Apply Filters</button>
+            </div>
+
+            <div id="navigation">
+                <h3>Dashboard Navigation</h3>
+                <ul>
+                    <li><a href="../index.html">Main Dashboard</a></li>
+                    <li><a href="dutch-stats-dashboard.html">Dutch Stats Dashboard</a></li>
+                    <li><a href="cbs-dashboard.html" class="active">CBS Dashboard</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <div id="chartContainer">
+            <!-- Charts will appear here -->
+            <canvas id="cbsTrendChart"></canvas>
+            <canvas id="cbsComparisonChart"></canvas>
+            <canvas id="cbsDistributionChart"></canvas>
+        </div>
+    </main>
+
+    <footer>
+        <p>CBS Dashboard v1.0 | 🤖 Generated with Ollama + Claude Code</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../scripts.js"></script>
+    <script src="cbs-scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dutch Statistics Dashboard</title>
+    <link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+    <header>
+        <h1>Dutch Statistics Dashboard</h1>
+        <nav>
+            <button id="darkModeToggle">🌙</button>
+        </nav>
+    </header>
+
+    <main>
+        <aside>
+            <!-- Filters/Controls go here -->
+            <div id="controls">
+                <h3>Filters</h3>
+                <label for="yearFilter">Select Year:</label>
+                <select id="yearFilter">
+                    <option value="all">All Years</option>
+                    <option value="2020">2020</option>
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                </select>
+
+                <label for="metricFilter">Select Metric:</label>
+                <select id="metricFilter">
+                    <option value="all">All Metrics</option>
+                    <option value="chat_count">Chat Count</option>
+                    <option value="user_count">User Count</option>
+                </select>
+
+                <button id="applyFilters">Apply Filters</button>
+            </div>
+
+            <div id="navigation">
+                <h3>Dashboard Navigation</h3>
+                <ul>
+                    <li><a href="../index.html">Main Dashboard</a></li>
+                    <li><a href="dutch-stats-dashboard.html" class="active">Dutch Stats Dashboard</a></li>
+                    <li><a href="cbs-dashboard.html">CBS Dashboard</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <div id="chartContainer">
+            <!-- Charts will appear here -->
+            <canvas id="trendChart"></canvas>
+            <canvas id="comparisonChart"></canvas>
+            <canvas id="distributionChart"></canvas>
+        </div>
+    </main>
+
+    <footer>
+        <p>Dutch Statistics Dashboard v1.0 | 🤖 Generated with Ollama + Claude Code</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../scripts.js"></script>
+</body>
+</html>
