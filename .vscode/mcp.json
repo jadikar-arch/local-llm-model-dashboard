@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "cbs-cijfers-open-data": {
+      "command": "go",
+      "args": ["run", "github.com/dstotijn/mcp-cbs-cijfers-open-data@latest"]
+    }
+  }
+}

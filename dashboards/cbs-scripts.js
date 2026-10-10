@@ -1,193 +1,167 @@
-// Dark mode toggle
-document.getElementById('darkModeToggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-});
+const dashboardState = {
+    data: [],
+    charts: {}
+};
 
-// Load and process CBS CSV data
-async function loadCBSData() {
+function parseCSV(text) {
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return [];
+
+    const headers = lines[0].split(',').map(header => header.trim());
+
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(value => value.trim());
+        const item = {};
+
+        headers.forEach((header, index) => {
+            const value = values[index] ?? '';
+            item[header] = Number.isNaN(Number(value)) ? value : Number(value);
+        });
+
+        return item;
+    });
+}
+
+async function loadData() {
     try {
-        // In a real implementation, this would fetch from the actual CSV file
-        // For now, using sample data based on the provided CSV
+        const response = await fetch('../data/real-data.csv');
+        if (!response.ok) {
+            throw new Error(`Failed to load data: ${response.status}`);
+        }
 
-        const cbsData = [
-            {year: 2020, population: 17000000, employment_rate: 68.5},
-            {year: 2021, population: 17100000, employment_rate: 69.2},
-            {year: 2022, population: 17200000, employment_rate: 70.1}
-        ];
-
-        return cbsData;
+        const csvText = await response.text();
+        return parseCSV(csvText);
     } catch (error) {
         console.error('Error loading CBS data:', error);
         return [];
     }
 }
 
-// Create CBS trend chart
-function createCBSTrendChart(data) {
-    const ctx = document.getElementById('cbsTrendChart').getContext('2d');
+function populateFilters(data) {
+    const yearFilter = document.getElementById('yearFilter');
+    const years = [...new Set(data.map(item => item.year))];
 
-    // Prepare data for trend chart
+    yearFilter.innerHTML = '<option value="all">All Years</option>' +
+        years.map(year => `<option value="${year}">${year}</option>`).join('');
+}
+
+function getFilteredData() {
+    const yearFilter = document.getElementById('yearFilter').value;
+    const metricFilter = document.getElementById('metricFilter').value;
+    let filtered = [...dashboardState.data];
+
+    if (yearFilter !== 'all') {
+        filtered = filtered.filter(item => String(item.year) === String(yearFilter));
+    }
+
+    if (metricFilter !== 'all') {
+        filtered = filtered.filter(item => item[metricFilter] !== undefined && item[metricFilter] !== null);
+    }
+
+    return filtered;
+}
+
+function destroyCharts() {
+    Object.values(dashboardState.charts).forEach(chart => chart.destroy());
+    dashboardState.charts = {};
+}
+
+function renderCharts(data) {
+    destroyCharts();
+
     const years = data.map(item => item.year);
-    const populations = data.map(item => item.population);
-    const employmentRates = data.map(item => item.employment_rate);
+    const chatCounts = data.map(item => item.chat_count);
+    const userCounts = data.map(item => item.user_count);
 
-    new Chart(ctx, {
+    const trendCtx = document.getElementById('cbsTrendChart').getContext('2d');
+    dashboardState.charts.trend = new Chart(trendCtx, {
         type: 'line',
         data: {
             labels: years,
             datasets: [
                 {
-                    label: 'Population',
-                    data: populations,
-                    borderColor: 'rgb(75, 192, 192)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.1,
-                    fill: false,
-                    yAxisID: 'y'
+                    label: 'Chat Count',
+                    data: chatCounts,
+                    borderColor: '#14b8a6',
+                    backgroundColor: 'rgba(20, 184, 166, 0.12)',
+                    borderWidth: 3,
+                    tension: 0.25,
+                    fill: false
                 },
                 {
-                    label: 'Employment Rate (%)',
-                    data: employmentRates,
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0.1,
-                    fill: false,
-                    yAxisID: 'y1'
+                    label: 'User Count',
+                    data: userCounts,
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.12)',
+                    borderWidth: 3,
+                    tension: 0.25,
+                    fill: false
                 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Population'
-                    },
-                    position: 'left'
-                },
-                y1: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Employment Rate (%)'
-                    },
-                    position: 'right',
-                    grid: {
-                        drawOnChartArea: false
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Year'
-                    }
-                }
-            },
             plugins: {
-                legend: {
-                    position: 'top'
-                },
-                title: {
-                    display: true,
-                    text: 'CBS Data Trend Analysis'
-                }
+                title: { display: true, text: 'CBS trend analysis' },
+                legend: { position: 'top' }
+            },
+            scales: {
+                x: { title: { display: true, text: 'Year' } },
+                y: { beginAtZero: true, title: { display: true, text: 'Count' } }
             }
         }
     });
-}
 
-// Create CBS comparison chart
-function createCBSComparisonChart(data) {
-    const ctx = document.getElementById('cbsComparisonChart').getContext('2d');
-
-    // Prepare data for comparison chart
-    const years = data.map(item => item.year);
-    const populations = data.map(item => item.population);
-    const employmentRates = data.map(item => item.employment_rate);
-
-    new Chart(ctx, {
+    const comparisonCtx = document.getElementById('cbsComparisonChart').getContext('2d');
+    dashboardState.charts.comparison = new Chart(comparisonCtx, {
         type: 'bar',
         data: {
             labels: years,
             datasets: [
                 {
-                    label: 'Population',
-                    data: populations,
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
+                    label: 'Chat Count',
+                    data: chatCounts,
+                    backgroundColor: '#14b8a6',
+                    borderRadius: 6
                 },
                 {
-                    label: 'Employment Rate (%)',
-                    data: employmentRates,
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
+                    label: 'User Count',
+                    data: userCounts,
+                    backgroundColor: '#f97316',
+                    borderRadius: 6
                 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Value'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Year'
-                    }
-                }
-            },
             plugins: {
-                legend: {
-                    position: 'top'
-                },
-                title: {
-                    display: true,
-                    text: 'CBS Data Comparison by Year'
-                }
+                title: { display: true, text: 'CBS comparison by year' },
+                legend: { position: 'top' }
+            },
+            scales: {
+                x: { title: { display: true, text: 'Year' } },
+                y: { beginAtZero: true, title: { display: true, text: 'Count' } }
             }
         }
     });
-}
 
-// Create CBS distribution chart
-function createCBSDistributionChart(data) {
-    const ctx = document.getElementById('cbsDistributionChart').getContext('2d');
+    const distributionCtx = document.getElementById('cbsDistributionChart').getContext('2d');
+    const ratios = years.map((year, index) => {
+        const chat = Number(chatCounts[index] ?? 0);
+        const users = Number(userCounts[index] ?? 0);
+        return chat === 0 ? 0 : (users / chat) * 100;
+    });
 
-    // Prepare data for distribution chart
-    const years = data.map(item => item.year);
-    const populations = data.map(item => item.population);
-    const employmentRates = data.map(item => item.employment_rate);
-
-    new Chart(ctx, {
-        type: 'pie',
+    dashboardState.charts.distribution = new Chart(distributionCtx, {
+        type: 'doughnut',
         data: {
             labels: years,
             datasets: [{
-                label: 'Population Distribution',
-                data: populations,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 205, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 205, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
+                label: 'User-to-Chat Ratio (%)',
+                data: ratios,
+                backgroundColor: ['#f97316', '#3b82f6', '#10b981'],
                 borderWidth: 1
             }]
         },
@@ -195,40 +169,41 @@ function createCBSDistributionChart(data) {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    position: 'bottom'
-                },
-                title: {
-                    display: true,
-                    text: 'Population Distribution by Year'
-                }
+                title: { display: true, text: 'CBS user-to-chat ratio' },
+                legend: { position: 'bottom' }
             }
         }
     });
 }
 
-// Apply CBS filters
-function applyCBSFilters() {
-    const yearFilter = document.getElementById('cbsYearFilter').value;
-    const metricFilter = document.getElementById('cbsMetricFilter').value;
-
-    console.log('Applying CBS filters:', { yearFilter, metricFilter });
-    // In a real implementation, this would filter the data and update charts
+function applyFilters() {
+    const filtered = getFilteredData();
+    if (filtered.length > 0) {
+        renderCharts(filtered);
+    } else {
+        renderCharts([{ year: 'No data', chat_count: 0, user_count: 0 }]);
+    }
 }
 
-// Initialize all charts when the page loads
+function resetFilters() {
+    document.getElementById('yearFilter').value = 'all';
+    document.getElementById('metricFilter').value = 'all';
+    renderCharts(dashboardState.data);
+}
+
+document.getElementById('darkModeToggle').addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load CBS data
-    const cbsData = await loadCBSData();
+    dashboardState.data = await loadData();
 
-    if (cbsData.length > 0) {
-        createCBSTrendChart(cbsData);
-        createCBSComparisonChart(cbsData);
-        createCBSDistributionChart(cbsData);
+    if (dashboardState.data.length > 0) {
+        populateFilters(dashboardState.data);
+        renderCharts(dashboardState.data);
 
-        // Add filter functionality
-        const applyFiltersBtn = document.getElementById('applyCBSFilters');
-        applyFiltersBtn.addEventListener('click', applyCBSFilters);
+        document.getElementById('applyFilters').addEventListener('click', applyFilters);
+        document.getElementById('resetFilter').addEventListener('click', resetFilters);
     } else {
         console.error('No data loaded for CBS charts');
     }

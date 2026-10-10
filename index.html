@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Dashboard</title>
+    <title>Local LLM Model Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="page-overview">
     <header>
-        <h1>Dashboard Name</h1>
+        <div>
+            <h1>Local LLM Model Dashboard</h1>
+            <p class="page-tagline">Project overview and local AI experiment summary</p>
+        </div>
         <nav>
             <button id="darkModeToggle">🌙</button>
         </nav>
@@ -16,33 +19,57 @@
 
     <main>
         <aside>
-            <!-- Filters/Controls go here -->
             <div id="controls">
-                <label for="dataFilter">Filter Data:</label>
-                <input type="range" id="dataFilter" min="0" max="100" value="100">
-                <button id="resetFilter">Reset</button>
+                <h3>Filters</h3>
+                <label for="yearFilter">Year:</label>
+                <select id="yearFilter">
+                    <option value="all">All Years</option>
+                </select>
+
+                <label for="metricFilter">Metric:</label>
+                <select id="metricFilter">
+                    <option value="all">All Metrics</option>
+                    <option value="chat_count">Chat Count</option>
+                    <option value="user_count">User Count</option>
+                </select>
+
+                <button id="applyFilters">Apply Filters</button>
+                <button id="resetFilter" type="button">Reset</button>
             </div>
 
             <div id="navigation">
                 <h3>Dashboard Navigation</h3>
                 <ul>
-                    <li><a href="index.html" class="active">Main Dashboard</a></li>
-                    <li><a href="dashboards/dutch-stats-dashboard.html">Dutch Stats Dashboard</a></li>
-                    <li><a href="dashboards/cbs-dashboard.html">CBS Dashboard</a></li>
+                    <li><a href="index.html" class="active">Local LLM Model Dashboard</a></li>
+                    <li><a href="dashboards/dutch-stats-dashboard.html">Dutch Statistics Dashboard</a></li>
+                    <li><a href="dashboards/cbs-dashboard.html">CBS NL Data Dashboard</a></li>
                 </ul>
             </div>
         </aside>
 
         <div id="chartContainer">
-            <!-- Charts will appear here -->
-            <canvas id="mainChart"></canvas>
-            <canvas id="categoryChart"></canvas>
-            <canvas id="regionChart"></canvas>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <span class="label">Years</span>
+                    <span class="value">2020-2022</span>
+                </div>
+                <div class="stat-card">
+                    <span class="label">Model</span>
+                    <span class="value">Qwen3-Coder</span>
+                </div>
+                <div class="stat-card">
+                    <span class="label">Source</span>
+                    <span class="value">CBS.nl</span>
+                </div>
+            </div>
+            <canvas id="overviewTrendChart"></canvas>
+            <canvas id="overviewComparisonChart"></canvas>
+            <canvas id="overviewDistributionChart"></canvas>
         </div>
     </main>
 
     <footer>
-        <p>Dashboard v1.0 | 🤖 Generated with Ollama + Claude Code</p>
+        <p>Local LLM Model Dashboard | 🤖 Generated with Ollama + Claude Code</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

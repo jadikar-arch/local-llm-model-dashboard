@@ -1,37 +1,80 @@
-// Dark mode toggle
-document.getElementById('darkModeToggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-});
+const dashboardState = {
+    data: [],
+    charts: {}
+};
 
-// Load and process CSV data
-async function loadCSVData() {
+function parseCSV(text) {
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return [];
+
+    const headers = lines[0].split(',').map(header => header.trim());
+
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(value => value.trim());
+        const item = {};
+
+        headers.forEach((header, index) => {
+            const value = values[index] ?? '';
+            item[header] = Number.isNaN(Number(value)) ? value : Number(value);
+        });
+
+        return item;
+    });
+}
+
+async function loadData() {
     try {
-        // In a real implementation, this would fetch from the actual CSV file
-        // For now, using sample data based on the provided CSV
+        const response = await fetch('../data/real-data.csv');
+        if (!response.ok) {
+            throw new Error(`Failed to load data: ${response.status}`);
+        }
 
-        const csvData = [
-            {year: 2020, chat_count: 1500, user_count: 100},
-            {year: 2021, chat_count: 2000, user_count: 120},
-            {year: 2022, chat_count: 2500, user_count: 150}
-        ];
-
-        return csvData;
+        const csvText = await response.text();
+        return parseCSV(csvText);
     } catch (error) {
         console.error('Error loading CSV data:', error);
         return [];
     }
 }
 
-// Create trend chart
-function createTrendChart(data) {
-    const ctx = document.getElementById('trendChart').getContext('2d');
+function populateFilters(data) {
+    const yearFilter = document.getElementById('yearFilter');
+    const years = [...new Set(data.map(item => item.year))];
 
-    // Prepare data for trend chart
+    yearFilter.innerHTML = '<option value="all">All Years</option>' +
+        years.map(year => `<option value="${year}">${year}</option>`).join('');
+}
+
+function getFilteredData() {
+    const yearFilter = document.getElementById('yearFilter').value;
+    const metricFilter = document.getElementById('metricFilter').value;
+    let filtered = [...dashboardState.data];
+
+    if (yearFilter !== 'all') {
+        filtered = filtered.filter(item => String(item.year) === String(yearFilter));
+    }
+
+    if (metricFilter !== 'all') {
+        filtered = filtered.filter(item => item[metricFilter] !== undefined && item[metricFilter] !== null);
+    }
+
+    return filtered;
+}
+
+function destroyCharts() {
+    Object.values(dashboardState.charts).forEach(chart => chart.destroy());
+    dashboardState.charts = {};
+}
+
+function renderCharts(data) {
+    destroyCharts();
+
     const years = data.map(item => item.year);
     const chatCounts = data.map(item => item.chat_count);
     const userCounts = data.map(item => item.user_count);
 
-    new Chart(ctx, {
+    const trendCtx = document.getElementById('dutchTrendChart').getContext('2d');
+    dashboardState.charts.trend = new Chart(trendCtx, {
         type: 'line',
         data: {
             labels: years,
@@ -39,17 +82,19 @@ function createTrendChart(data) {
                 {
                     label: 'Chat Count',
                     data: chatCounts,
-                    borderColor: 'rgb(75, 192, 192)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    tension: 0.1,
+                    borderColor: '#14b8a6',
+                    backgroundColor: 'rgba(20, 184, 166, 0.12)',
+                    borderWidth: 3,
+                    tension: 0.25,
                     fill: false
                 },
                 {
                     label: 'User Count',
                     data: userCounts,
-                    borderColor: 'rgb(255, 99, 132)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    tension: 0.1,
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.12)',
+                    borderWidth: 3,
+                    tension: 0.25,
                     fill: false
                 }
             ]
@@ -57,44 +102,19 @@ function createTrendChart(data) {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Count'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Year'
-                    }
-                }
-            },
             plugins: {
-                legend: {
-                    position: 'top'
-                },
-                title: {
-                    display: true,
-                    text: 'Trend Analysis: Chat Count vs User Count'
-                }
+                title: { display: true, text: 'Dutch statistics trend' },
+                legend: { position: 'top' }
+            },
+            scales: {
+                x: { title: { display: true, text: 'Year' } },
+                y: { beginAtZero: true, title: { display: true, text: 'Count' } }
             }
         }
     });
-}
 
-// Create comparison chart
-function createComparisonChart(data) {
-    const ctx = document.getElementById('comparisonChart').getContext('2d');
-
-    // Prepare data for comparison chart
-    const years = data.map(item => item.year);
-    const chatCounts = data.map(item => item.chat_count);
-    const userCounts = data.map(item => item.user_count);
-
-    new Chart(ctx, {
+    const comparisonCtx = document.getElementById('dutchComparisonChart').getContext('2d');
+    dashboardState.charts.comparison = new Chart(comparisonCtx, {
         type: 'bar',
         data: {
             labels: years,
@@ -102,83 +122,46 @@ function createComparisonChart(data) {
                 {
                     label: 'Chat Count',
                     data: chatCounts,
-                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
+                    backgroundColor: '#14b8a6',
+                    borderRadius: 6
                 },
                 {
                     label: 'User Count',
                     data: userCounts,
-                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 1
+                    backgroundColor: '#f97316',
+                    borderRadius: 6
                 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Count'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Year'
-                    }
-                }
-            },
             plugins: {
-                legend: {
-                    position: 'top'
-                },
-                title: {
-                    display: true,
-                    text: 'Comparison: Chat Count vs User Count by Year'
-                }
+                title: { display: true, text: 'Year-over-year comparison' },
+                legend: { position: 'top' }
+            },
+            scales: {
+                x: { title: { display: true, text: 'Year' } },
+                y: { beginAtZero: true, title: { display: true, text: 'Count' } }
             }
         }
     });
-}
 
-// Create distribution chart
-function createDistributionChart(data) {
-    const ctx = document.getElementById('distributionChart').getContext('2d');
-
-    // Prepare data for distribution chart
-    const years = data.map(item => item.year);
-    const chatCounts = data.map(item => item.chat_count);
-    const userCounts = data.map(item => item.user_count);
-
-    // Calculate ratios
+    const distributionCtx = document.getElementById('dutchDistributionChart').getContext('2d');
     const ratios = years.map((year, index) => {
-        return (userCounts[index] / chatCounts[index]) * 100;
+        const chat = Number(chatCounts[index] ?? 0);
+        const users = Number(userCounts[index] ?? 0);
+        return chat === 0 ? 0 : (users / chat) * 100;
     });
 
-    new Chart(ctx, {
+    dashboardState.charts.distribution = new Chart(distributionCtx, {
         type: 'doughnut',
         data: {
             labels: years,
             datasets: [{
-                label: 'User to Chat Ratio (%)',
+                label: 'User-to-Chat Ratio (%)',
                 data: ratios,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 205, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 205, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
+                backgroundColor: ['#f97316', '#3b82f6', '#10b981'],
                 borderWidth: 1
             }]
         },
@@ -186,40 +169,41 @@ function createDistributionChart(data) {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: {
-                    position: 'bottom'
-                },
-                title: {
-                    display: true,
-                    text: 'User to Chat Ratio Distribution'
-                }
+                title: { display: true, text: 'User-to-chat ratio by year' },
+                legend: { position: 'bottom' }
             }
         }
     });
 }
 
-// Apply filters
 function applyFilters() {
-    const yearFilter = document.getElementById('yearFilter').value;
-    const metricFilter = document.getElementById('metricFilter').value;
-
-    console.log('Applying filters:', { yearFilter, metricFilter });
-    // In a real implementation, this would filter the data and update charts
+    const filtered = getFilteredData();
+    if (filtered.length > 0) {
+        renderCharts(filtered);
+    } else {
+        renderCharts([{ year: 'No data', chat_count: 0, user_count: 0 }]);
+    }
 }
 
-// Initialize all charts when the page loads
+function resetFilters() {
+    document.getElementById('yearFilter').value = 'all';
+    document.getElementById('metricFilter').value = 'all';
+    renderCharts(dashboardState.data);
+}
+
+document.getElementById('darkModeToggle').addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+});
+
 document.addEventListener('DOMContentLoaded', async () => {
-    // Load CSV data
-    const csvData = await loadCSVData();
+    dashboardState.data = await loadData();
 
-    if (csvData.length > 0) {
-        createTrendChart(csvData);
-        createComparisonChart(csvData);
-        createDistributionChart(csvData);
+    if (dashboardState.data.length > 0) {
+        populateFilters(dashboardState.data);
+        renderCharts(dashboardState.data);
 
-        // Add filter functionality
-        const applyFiltersBtn = document.getElementById('applyFilters');
-        applyFiltersBtn.addEventListener('click', applyFilters);
+        document.getElementById('applyFilters').addEventListener('click', applyFilters);
+        document.getElementById('resetFilter').addEventListener('click', resetFilters);
     } else {
         console.error('No data loaded for charts');
     }

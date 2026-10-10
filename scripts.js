@@ -1,214 +1,215 @@
-// Dark mode toggle
+const dashboardState = {
+    data: [],
+    charts: {}
+};
+
+function parseCSV(text) {
+    const lines = text.trim().split(/\r?\n/);
+    if (lines.length < 2) return [];
+
+    const headers = lines[0].split(',').map(header => header.trim());
+
+    return lines.slice(1).map(line => {
+        const values = line.split(',').map(value => value.trim());
+        const item = {};
+
+        headers.forEach((header, index) => {
+            const value = values[index] ?? '';
+            item[header] = Number.isNaN(Number(value)) ? value : Number(value);
+        });
+
+        return item;
+    });
+}
+
+async function loadData() {
+    try {
+        const response = await fetch('data/real-data.csv');
+        if (!response.ok) {
+            throw new Error(`Failed to load data: ${response.status}`);
+        }
+
+        const csvText = await response.text();
+        return parseCSV(csvText);
+    } catch (error) {
+        console.error('Error loading CSV data:', error);
+        return [];
+    }
+}
+
+function populateFilters(data) {
+    const yearFilter = document.getElementById('yearFilter');
+    const years = [...new Set(data.map(item => item.year))];
+
+    yearFilter.innerHTML = '<option value="all">All Years</option>' +
+        years.map(year => `<option value="${year}">${year}</option>`).join('');
+}
+
+function getFilteredData() {
+    const yearFilter = document.getElementById('yearFilter').value;
+    const metricFilter = document.getElementById('metricFilter').value;
+    let filtered = [...dashboardState.data];
+
+    if (yearFilter !== 'all') {
+        filtered = filtered.filter(item => String(item.year) === String(yearFilter));
+    }
+
+    if (metricFilter !== 'all') {
+        filtered = filtered.filter(item => item[metricFilter] !== undefined && item[metricFilter] !== null);
+    }
+
+    return filtered;
+}
+
+function destroyCharts() {
+    Object.values(dashboardState.charts).forEach(chart => chart.destroy());
+    dashboardState.charts = {};
+}
+
+function renderCharts(data) {
+    destroyCharts();
+
+    const years = data.map(item => item.year);
+    const chatCounts = data.map(item => item.chat_count);
+    const userCounts = data.map(item => item.user_count);
+
+    const trendCtx = document.getElementById('overviewTrendChart')?.getContext('2d');
+    if (trendCtx) {
+        dashboardState.charts.trend = new Chart(trendCtx, {
+        type: 'line',
+        data: {
+            labels: years,
+            datasets: [
+                {
+                    label: 'Chat Count',
+                    data: chatCounts,
+                    borderColor: '#14b8a6',
+                    backgroundColor: 'rgba(20, 184, 166, 0.12)',
+                    borderWidth: 3,
+                    tension: 0.25,
+                    fill: false
+                },
+                {
+                    label: 'User Count',
+                    data: userCounts,
+                    borderColor: '#f97316',
+                    backgroundColor: 'rgba(249, 115, 22, 0.12)',
+                    borderWidth: 3,
+                    tension: 0.25,
+                    fill: false
+                }
+            ]
+        },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'Local model usage trend' },
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Year' } },
+                    y: { beginAtZero: true, title: { display: true, text: 'Count' } }
+                }
+            }
+        });
+    }
+
+    const comparisonCtx = document.getElementById('overviewComparisonChart')?.getContext('2d');
+    if (comparisonCtx) {
+        dashboardState.charts.comparison = new Chart(comparisonCtx, {
+        type: 'bar',
+        data: {
+            labels: years,
+            datasets: [
+                {
+                    label: 'Chat Count',
+                    data: chatCounts,
+                    backgroundColor: '#14b8a6',
+                    borderRadius: 6
+                },
+                {
+                    label: 'User Count',
+                    data: userCounts,
+                    backgroundColor: '#f97316',
+                    borderRadius: 6
+                }
+            ]
+        },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'Chat vs user comparison' },
+                    legend: { position: 'top' }
+                },
+                scales: {
+                    x: { title: { display: true, text: 'Year' } },
+                    y: { beginAtZero: true, title: { display: true, text: 'Count' } }
+                }
+            }
+        });
+    }
+
+    const distributionCtx = document.getElementById('overviewDistributionChart')?.getContext('2d');
+    const ratios = years.map((year, index) => {
+        const chat = Number(chatCounts[index] ?? 0);
+        const users = Number(userCounts[index] ?? 0);
+        return chat === 0 ? 0 : (users / chat) * 100;
+    });
+
+    dashboardState.charts.distribution = new Chart(distributionCtx, {
+        type: 'doughnut',
+        data: {
+            labels: years,
+            datasets: [{
+                label: 'User-to-Chat Ratio (%)',
+                data: ratios,
+                backgroundColor: ['#f97316', '#3b82f6', '#10b981'],
+                borderWidth: 1
+            }]
+        },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: 'User-to-chat ratio' },
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    }
+}
+
+function applyFilters() {
+    const filtered = getFilteredData();
+    if (filtered.length > 0) {
+        renderCharts(filtered);
+    } else {
+        renderCharts([{ year: 'No data', chat_count: 0, user_count: 0 }]);
+    }
+}
+
+function resetFilters() {
+    document.getElementById('yearFilter').value = 'all';
+    document.getElementById('metricFilter').value = 'all';
+    renderCharts(dashboardState.data);
+}
+
 document.getElementById('darkModeToggle').addEventListener('click', () => {
     document.body.classList.toggle('dark-mode');
 });
 
-// Sample data for demonstration
-const sampleData = {
-    data: [
-        {
-            category: "Electronics",
-            sales: 25000,
-            region: "North"
-        },
-        {
-            category: "Clothing",
-            sales: 18000,
-            region: "South"
-        },
-        {
-            category: "Home",
-            sales: 12000,
-            region: "East"
-        },
-        {
-            category: "Toys",
-            sales: 9000,
-            region: "West"
-        }
-    ]
-};
+document.addEventListener('DOMContentLoaded', async () => {
+    dashboardState.data = await loadData();
 
-// Create main chart
-function createMainChart() {
-    const ctx = document.getElementById('mainChart').getContext('2d');
+    if (dashboardState.data.length > 0) {
+        populateFilters(dashboardState.data);
+        renderCharts(dashboardState.data);
 
-    // Prepare data for the main chart
-    const categories = sampleData.data.map(item => item.category);
-    const sales = sampleData.data.map(item => item.sales);
-
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: categories,
-            datasets: [{
-                label: 'Sales by Category',
-                data: sales,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 205, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 205, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Sales Amount'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Product Categories'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Sales by Product Category'
-                }
-            }
-        }
-    });
-}
-
-// Create category chart
-function createCategoryChart() {
-    const ctx = document.getElementById('categoryChart').getContext('2d');
-
-    // Prepare data for category chart
-    const categories = sampleData.data.map(item => item.category);
-    const sales = sampleData.data.map(item => item.sales);
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: categories,
-            datasets: [{
-                label: 'Sales Trend',
-                data: sales,
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1,
-                pointBackgroundColor: 'rgb(75, 192, 192)',
-                pointBorderColor: '#fff',
-                pointHoverRadius: 8
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Sales Amount'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Product Categories'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: true,
-                    text: 'Sales Trend by Category'
-                }
-            }
-        }
-    });
-}
-
-// Create region chart
-function createRegionChart() {
-    const ctx = document.getElementById('regionChart').getContext('2d');
-
-    // Prepare data for region chart
-    const regions = sampleData.data.map(item => item.region);
-    const sales = sampleData.data.map(item => item.sales);
-
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: regions,
-            datasets: [{
-                data: sales,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 205, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 205, 86, 1)',
-                    'rgba(75, 192, 192, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'bottom'
-                },
-                title: {
-                    display: true,
-                    text: 'Sales Distribution by Region'
-                }
-            }
-        }
-    });
-}
-
-// Initialize all charts when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    createMainChart();
-    createCategoryChart();
-    createRegionChart();
-
-    // Add filter functionality
-    const dataFilter = document.getElementById('dataFilter');
-    const resetFilter = document.getElementById('resetFilter');
-
-    dataFilter.addEventListener('input', function() {
-        // In a real implementation, this would filter the charts based on the value
-        console.log('Filter value:', this.value);
-    });
-
-    resetFilter.addEventListener('click', function() {
-        dataFilter.value = 100;
-        // Reset charts to original state
-        createMainChart();
-        createCategoryChart();
-        createRegionChart();
-    });
+        document.getElementById('applyFilters').addEventListener('click', applyFilters);
+        document.getElementById('resetFilter').addEventListener('click', resetFilters);
+    } else {
+        console.error('No data loaded for charts');
+    }
 });

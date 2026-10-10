@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CBS Dashboard</title>
+    <title>CBS NL Data Dashboard</title>
     <link rel="stylesheet" href="../styles.css">
 </head>
-<body>
+<body class="page-cbs">
     <header>
-        <h1>CBS Dashboard</h1>
+        <div>
+            <h1>CBS NL Data Dashboard</h1>
+            <p class="page-tagline">CBS-backed trend view for population and local AI usage patterns</p>
+        </div>
         <nav>
             <button id="darkModeToggle">🌙</button>
         </nav>
@@ -16,39 +19,35 @@
 
     <main>
         <aside>
-            <!-- Filters/Controls go here -->
             <div id="controls">
                 <h3>Filters</h3>
-                <label for="cbsYearFilter">Select Year:</label>
-                <select id="cbsYearFilter">
+                <label for="yearFilter">Year:</label>
+                <select id="yearFilter">
                     <option value="all">All Years</option>
-                    <option value="2020">2020</option>
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
                 </select>
 
-                <label for="cbsMetricFilter">Select Metric:</label>
-                <select id="cbsMetricFilter">
+                <label for="metricFilter">Metric:</label>
+                <select id="metricFilter">
                     <option value="all">All Metrics</option>
-                    <option value="population">Population</option>
-                    <option value="employment">Employment Rate</option>
+                    <option value="chat_count">Chat Count</option>
+                    <option value="user_count">User Count</option>
                 </select>
 
-                <button id="applyCBSFilters">Apply Filters</button>
+                <button id="applyFilters">Apply Filters</button>
+                <button id="resetFilter" type="button">Reset</button>
             </div>
 
             <div id="navigation">
                 <h3>Dashboard Navigation</h3>
                 <ul>
-                    <li><a href="../index.html">Main Dashboard</a></li>
-                    <li><a href="dutch-stats-dashboard.html">Dutch Stats Dashboard</a></li>
-                    <li><a href="cbs-dashboard.html" class="active">CBS Dashboard</a></li>
+                    <li><a href="../index.html">Local LLM Model Dashboard</a></li>
+                    <li><a href="dutch-stats-dashboard.html">Dutch Statistics Dashboard</a></li>
+                    <li><a href="cbs-dashboard.html" class="active">CBS NL Data Dashboard</a></li>
                 </ul>
             </div>
         </aside>
 
         <div id="chartContainer">
-            <!-- Charts will appear here -->
             <canvas id="cbsTrendChart"></canvas>
             <canvas id="cbsComparisonChart"></canvas>
             <canvas id="cbsDistributionChart"></canvas>
@@ -56,11 +55,10 @@
     </main>
 
     <footer>
-        <p>CBS Dashboard v1.0 | 🤖 Generated with Ollama + Claude Code</p>
+        <p>CBS NL Data Dashboard | 🤖 Generated with Ollama + Claude Code</p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="../scripts.js"></script>
     <script src="cbs-scripts.js"></script>
 </body>
 </html>
