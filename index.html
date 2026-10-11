@@ -13,6 +13,11 @@
             <p class="page-tagline">Project overview and local AI experiment summary</p>
         </div>
         <nav>
+            <div class="page-nav-links">
+                <a href="#overview-section">Overview</a>
+                <a href="#dutch-section">Dutch</a>
+                <a href="#cbs-section">CBS</a>
+            </div>
             <button id="darkModeToggle">🌙</button>
         </nav>
     </header>
@@ -38,33 +43,64 @@
             </div>
 
             <div id="navigation">
-                <h3>Dashboard Navigation</h3>
+                <h3>Dashboard Sections</h3>
                 <ul>
-                    <li><a href="index.html" class="active">Local LLM Model Dashboard</a></li>
-                    <li><a href="dashboards/dutch-stats-dashboard.html">Dutch Statistics Dashboard</a></li>
-                    <li><a href="dashboards/cbs-dashboard.html">CBS NL Data Dashboard</a></li>
+                    <li><a href="#overview-section" class="active">Overview</a></li>
+                    <li><a href="#dutch-section">Dutch Statistics</a></li>
+                    <li><a href="#cbs-section">CBS NL Data</a></li>
                 </ul>
             </div>
         </aside>
 
         <div id="chartContainer">
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <span class="label">Years</span>
-                    <span class="value">2020-2022</span>
+            <section id="overview-section" class="dashboard-panel">
+                <div class="panel-header">
+                    <h2>Local LLM Model Dashboard</h2>
                 </div>
-                <div class="stat-card">
-                    <span class="label">Model</span>
-                    <span class="value">Qwen3-Coder</span>
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <span class="label">Years</span>
+                        <span class="value">2020-2022</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Model</span>
+                        <span class="value">Qwen3-Coder</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="label">Source</span>
+                        <span class="value">CBS.nl</span>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <span class="label">Source</span>
-                    <span class="value">CBS.nl</span>
+                <div class="panel-grid">
+                    <canvas id="overviewTrendChart"></canvas>
+                    <canvas id="overviewComparisonChart"></canvas>
+                    <canvas id="overviewDistributionChart"></canvas>
                 </div>
-            </div>
-            <canvas id="overviewTrendChart"></canvas>
-            <canvas id="overviewComparisonChart"></canvas>
-            <canvas id="overviewDistributionChart"></canvas>
+            </section>
+
+            <section id="dutch-section" class="dashboard-panel">
+                <div class="panel-header">
+                    <h2>Dutch Statistics Dashboard</h2>
+                    <p class="panel-subtitle">Nation-level trend view for local model usage and engagement</p>
+                </div>
+                <div class="panel-grid">
+                    <canvas id="dutchTrendChart"></canvas>
+                    <canvas id="dutchComparisonChart"></canvas>
+                    <canvas id="dutchDistributionChart"></canvas>
+                </div>
+            </section>
+
+            <section id="cbs-section" class="dashboard-panel">
+                <div class="panel-header">
+                    <h2>CBS NL Data Dashboard</h2>
+                    <p class="panel-subtitle">CBS-backed trend view for population and local AI usage patterns</p>
+                </div>
+                <div class="panel-grid">
+                    <canvas id="cbsTrendChart"></canvas>
+                    <canvas id="cbsComparisonChart"></canvas>
+                    <canvas id="cbsDistributionChart"></canvas>
+                </div>
+            </section>
         </div>
     </main>
 

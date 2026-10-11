@@ -66,119 +66,172 @@ function destroyCharts() {
     dashboardState.charts = {};
 }
 
+function buildChartConfig({ id, title, type, labels, dataSeries, backgroundColors, borderColors }) {
+    const datasetDefinitions = [
+        {
+            label: 'Chat Count',
+            data: dataSeries.chat,
+            backgroundColor: backgroundColors.chat,
+            borderColor: borderColors.chat,
+            borderWidth: 3,
+            tension: 0.25,
+            fill: false,
+            borderRadius: 6
+        },
+        {
+            label: 'User Count',
+            data: dataSeries.user,
+            backgroundColor: backgroundColors.user,
+            borderColor: borderColors.user,
+            borderWidth: 3,
+            tension: 0.25,
+            fill: false,
+            borderRadius: 6
+        }
+    ];
+
+    if (type === 'doughnut') {
+        return {
+            type,
+            data: {
+                labels,
+                datasets: [{
+                    label: 'User-to-Chat Ratio (%)',
+                    data: dataSeries.ratio,
+                    backgroundColor: ['#f97316', '#3b82f6', '#10b981'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: { display: true, text: title },
+                    legend: { position: 'bottom' }
+                }
+            }
+        };
+    }
+
+    return {
+        type,
+        data: {
+            labels,
+            datasets: datasetDefinitions
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: { display: true, text: title },
+                legend: { position: 'top' }
+            },
+            scales: {
+                x: { title: { display: true, text: 'Year' } },
+                y: { beginAtZero: true, title: { display: true, text: 'Count' } }
+            }
+        }
+    };
+}
+
 function renderCharts(data) {
     destroyCharts();
 
     const years = data.map(item => item.year);
     const chatCounts = data.map(item => item.chat_count);
     const userCounts = data.map(item => item.user_count);
-
-    const trendCtx = document.getElementById('overviewTrendChart')?.getContext('2d');
-    if (trendCtx) {
-        dashboardState.charts.trend = new Chart(trendCtx, {
-        type: 'line',
-        data: {
-            labels: years,
-            datasets: [
-                {
-                    label: 'Chat Count',
-                    data: chatCounts,
-                    borderColor: '#14b8a6',
-                    backgroundColor: 'rgba(20, 184, 166, 0.12)',
-                    borderWidth: 3,
-                    tension: 0.25,
-                    fill: false
-                },
-                {
-                    label: 'User Count',
-                    data: userCounts,
-                    borderColor: '#f97316',
-                    backgroundColor: 'rgba(249, 115, 22, 0.12)',
-                    borderWidth: 3,
-                    tension: 0.25,
-                    fill: false
-                }
-            ]
-        },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: { display: true, text: 'Local model usage trend' },
-                    legend: { position: 'top' }
-                },
-                scales: {
-                    x: { title: { display: true, text: 'Year' } },
-                    y: { beginAtZero: true, title: { display: true, text: 'Count' } }
-                }
-            }
-        });
-    }
-
-    const comparisonCtx = document.getElementById('overviewComparisonChart')?.getContext('2d');
-    if (comparisonCtx) {
-        dashboardState.charts.comparison = new Chart(comparisonCtx, {
-        type: 'bar',
-        data: {
-            labels: years,
-            datasets: [
-                {
-                    label: 'Chat Count',
-                    data: chatCounts,
-                    backgroundColor: '#14b8a6',
-                    borderRadius: 6
-                },
-                {
-                    label: 'User Count',
-                    data: userCounts,
-                    backgroundColor: '#f97316',
-                    borderRadius: 6
-                }
-            ]
-        },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: { display: true, text: 'Chat vs user comparison' },
-                    legend: { position: 'top' }
-                },
-                scales: {
-                    x: { title: { display: true, text: 'Year' } },
-                    y: { beginAtZero: true, title: { display: true, text: 'Count' } }
-                }
-            }
-        });
-    }
-
-    const distributionCtx = document.getElementById('overviewDistributionChart')?.getContext('2d');
-    const ratios = years.map((year, index) => {
+    const ratios = years.map((_, index) => {
         const chat = Number(chatCounts[index] ?? 0);
         const users = Number(userCounts[index] ?? 0);
         return chat === 0 ? 0 : (users / chat) * 100;
     });
 
-    dashboardState.charts.distribution = new Chart(distributionCtx, {
-        type: 'doughnut',
-        data: {
-            labels: years,
-            datasets: [{
-                label: 'User-to-Chat Ratio (%)',
-                data: ratios,
-                backgroundColor: ['#f97316', '#3b82f6', '#10b981'],
-                borderWidth: 1
-            }]
+    const chartDefinitions = [
+        {
+            id: 'overviewTrendChart',
+            title: 'Local model usage trend',
+            type: 'line',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: 'rgba(20, 184, 166, 0.12)', user: 'rgba(249, 115, 22, 0.12)' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
         },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    title: { display: true, text: 'User-to-chat ratio' },
-                    legend: { position: 'bottom' }
-                }
-            }
-        });
-    }
+        {
+            id: 'overviewComparisonChart',
+            title: 'Chat vs user comparison',
+            type: 'bar',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: '#14b8a6', user: '#f97316' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
+        },
+        {
+            id: 'overviewDistributionChart',
+            title: 'User-to-chat ratio',
+            type: 'doughnut',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: '#14b8a6', user: '#f97316' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
+        },
+        {
+            id: 'dutchTrendChart',
+            title: 'Dutch statistics trend',
+            type: 'line',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: 'rgba(20, 184, 166, 0.12)', user: 'rgba(249, 115, 22, 0.12)' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
+        },
+        {
+            id: 'dutchComparisonChart',
+            title: 'Year-over-year comparison',
+            type: 'bar',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: '#14b8a6', user: '#f97316' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
+        },
+        {
+            id: 'dutchDistributionChart',
+            title: 'User-to-chat ratio by year',
+            type: 'doughnut',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: '#14b8a6', user: '#f97316' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
+        },
+        {
+            id: 'cbsTrendChart',
+            title: 'CBS trend analysis',
+            type: 'line',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: 'rgba(20, 184, 166, 0.12)', user: 'rgba(249, 115, 22, 0.12)' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
+        },
+        {
+            id: 'cbsComparisonChart',
+            title: 'CBS comparison by year',
+            type: 'bar',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: '#14b8a6', user: '#f97316' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
+        },
+        {
+            id: 'cbsDistributionChart',
+            title: 'CBS user-to-chat ratio',
+            type: 'doughnut',
+            dataSeries: { chat: chatCounts, user: userCounts, ratio: ratios },
+            backgroundColors: { chat: '#14b8a6', user: '#f97316' },
+            borderColors: { chat: '#14b8a6', user: '#f97316' }
+        }
+    ];
+
+    chartDefinitions.forEach(definition => {
+        const canvas = document.getElementById(definition.id);
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        dashboardState.charts[definition.id] = new Chart(ctx, buildChartConfig({
+            ...definition,
+            labels: years,
+            dataSeries: definition.dataSeries
+        }));
+    });
 }
 
 function applyFilters() {
@@ -196,9 +249,12 @@ function resetFilters() {
     renderCharts(dashboardState.data);
 }
 
-document.getElementById('darkModeToggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
-});
+const darkModeToggle = document.getElementById('darkModeToggle');
+if (darkModeToggle) {
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+    });
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
     dashboardState.data = await loadData();
@@ -207,8 +263,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         populateFilters(dashboardState.data);
         renderCharts(dashboardState.data);
 
-        document.getElementById('applyFilters').addEventListener('click', applyFilters);
-        document.getElementById('resetFilter').addEventListener('click', resetFilters);
+        const applyFiltersButton = document.getElementById('applyFilters');
+        const resetFilterButton = document.getElementById('resetFilter');
+
+        if (applyFiltersButton) {
+            applyFiltersButton.addEventListener('click', applyFilters);
+        }
+
+        if (resetFilterButton) {
+            resetFilterButton.addEventListener('click', resetFilters);
+        }
     } else {
         console.error('No data loaded for charts');
     }
