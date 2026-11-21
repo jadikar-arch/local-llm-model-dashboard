@@ -22,7 +22,11 @@ Run 2 (UI built by the model on data fetched by Claude) is archived in git tag `
 | Drifts on open goals | 30 small typed tasks (DATA, SHELL, TOPIC, QA, POLISH, HOME, DOCS), each with a procedure file. |
 | Cannot see images | `scripts/qa.mjs` (headless Chrome) prints PASS/FAIL facts; Playwright MCP is used in text mode. Screenshots go to `qa/` for the human. |
 | Says "done" when it is not | A task is accepted only if the gate passes AND the final message ends with `TASK_DONE`. Failure text is fed into the next attempt. 3 attempts, then `[!]` blocked. |
-| **Invents data** (run 1) | Provenance gate, section 3. Web tools are denied in `.claude/settings.json`. |
+| **Invents data** (run 1) | Provenance gate, section 3. Web tools are not available (tool list) and denied in settings. |
+| **Pads data to pass checks** (seen in rehearsal) | `validate_data.py` rejects values repeated 4+ periods in a row, mixed yearly/monthly periods and duplicate keys. |
+| The human's personal Claude setup leaks into the local session (plugins, hooks, global CLAUDE.md: 16k tokens) | Driver uses its own `CLAUDE_CONFIG_DIR`, 7 built-in tools, `--setting-sources project,local`. Baseline 7-10k tokens. |
+| Could weaken gates or read old solutions | Driver reverts changes to `scripts/`, `CLAUDE.md`, `PLAN.md`, MCP configs, settings and `tasks.md` and FAILS the attempt (HIGH). Trace audit fails the attempt on git-history reads, curl/wget/installs, web tools, archive reads. Edits to skill docs and similar oddities are reverted/logged as NOTE only. |
+| Tool schemas guessed wrong with deferred tool loading | DATA tasks load all europa tool schemas up front (`ENABLE_TOOL_SEARCH=false`), europa MCP only; other tasks get Playwright MCP only. |
 | Gets stuck | 45 min timeout per attempt, 9 h global deadline. A TOPIC task whose data file is missing is blocked immediately. |
 
 ## 2. Setup (3 minutes, before sleeping)
@@ -30,9 +34,11 @@ Run 2 (UI built by the model on data fetched by Claude) is archived in git tag `
    `OLLAMA_CONTEXT_LENGTH=65536 OLLAMA_KEEP_ALIVE=-1 OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 ollama serve`
 2. Mac on power. Terminal B:
    `cd /Users/munirdin/Documents/local-llm-model-dashboard && bash scripts/run-overnight.sh`
+   (dry run in a throwaway copy: `git clone ~/Documents/local-llm-model-dashboard ~/rehearsal && cd ~/rehearsal && git checkout research/run3-model-fetches-data && ln -s ~/Documents/local-llm-model-dashboard/node_modules node_modules && DEADLINE_HOURS=0.3 MAX_ATTEMPTS=1 bash scripts/run-overnight.sh`; press Ctrl-C after the first `NL-D1 ...` result. `DEADLINE_HOURS` may be decimal.)
 3. The driver: keeps the Mac awake, serves http://localhost:8000, creates branch `overnight/<time>` from `research/run3-model-fetches-data`, commits after every attempt, never pushes.
 4. Watch the first 15 minutes: the first line to wait for is `=== NL-D1 ... DONE` or `not accepted`. `tail -f logs/driver.log`.
-Verified before handover: the local model connects to the europa MCP in headless mode, calls `find_data` and receives real results (probe, 57 s).
+Verified before handover: the local model connects to the europa MCP in headless mode, calls tools and receives real results (probes). A rehearsal on a clone (NL-D1..D3, old harness) found the problems fixed in this version: global `pkill` of MCP servers (now: the session runs in its own process group and only that group is killed), padded data passing the gates, over-strict violation handling, symlinked trust path, integer-only deadline.
+Rehearsal observations about the MODEL (not harness), useful for the research: it recovers from tool-parameter errors, peaked at 36k of 64k tokens, but in one task never called a data tool and wrote invented data (caught by the provenance gate), and in another padded rows with copied values to reach the row minimum.
 
 ## 3. Data provenance gate (the key change from run 1)
 Every session is recorded as stream-json in `logs/<ID>-attemptN.jsonl`. After a DATA task, `check_provenance.py`:
