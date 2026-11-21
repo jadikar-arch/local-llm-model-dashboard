@@ -1,10 +1,28 @@
 {
   "permissions": {
     "defaultMode": "bypassPermissions",
-    "allow": ["Bash", "Read", "Edit", "Write", "Glob", "Grep", "mcp__playwright"],
+    "allow": [
+      "Bash",
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "mcp__playwright",
+      "mcp__europa"
+    ],
     "deny": [
-      "Bash(sudo:*)", "Bash(rm -rf /:*)", "Bash(rm -rf ~:*)", "Bash(git push:*)", "Bash(git reset --hard:*)",
-      "Bash(git clean:*)", "Read(./.env)", "Read(~/.ssh/**)", "Read(~/.aws/**)"
+      "Bash(sudo:*)",
+      "Bash(rm -rf /:*)",
+      "Bash(rm -rf ~:*)",
+      "Bash(git push:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean:*)",
+      "Read(./.env)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "WebFetch",
+      "WebSearch"
     ]
   }
 }

@@ -11,6 +11,7 @@ DEADLINE_HOURS="${DEADLINE_HOURS:-9}"      # hard stop
 TASK_TIMEOUT="${TASK_TIMEOUT:-2700}"       # seconds per attempt (45 min)
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
 MAX_TURNS="${MAX_TURNS:-45}"
+DATA_TURNS="${DATA_TURNS:-60}"          # data tasks explore tools first
 mkdir -p logs .state qa
 START=$(date +%s); DEADLINE=$((START + DEADLINE_HOURS*3600))
 say() { echo "[$(date +%H:%M:%S)] $*" | tee -a logs/driver.log; }
@@ -46,9 +47,9 @@ PY
 }
 
 gate() { # returns 0 if the deliverable passes the objective check for this task type
-  local type="$1" c="$2" topic="$3"
+  local type="$1" c="$2" topic="$3" trace="${4:-}"
   case "$type" in
-    DATA)  python3 scripts/validate_data.py "site/data/$c/$topic.json" ;;
+    DATA)  python3 scripts/validate_data.py "site/data/$c/$topic.json" && python3 scripts/check_provenance.py "site/data/$c/$topic.json" "$trace" ;;
     SHELL) [ -f "site/$c/index.html" ] && [ -f "site/$c/app.js" ] && node --check "site/$c/app.js" && echo OK ;;
     TOPIC) node --check "site/$c/topics/$topic.js" && python3 scripts/check_topic.py "site/$c/topics/$topic.js" ;;
     QA|POLISH) node scripts/qa.mjs "$c" "$PORT" ;;
@@ -66,6 +67,7 @@ while :; do
   BODY="${LINE#- \[ \] }"; ID="$(field "$BODY" 1)"; TYPE="$(field "$BODY" 2)"; C="$(field "$BODY" 3)"; TOPIC="$(field "$BODY" 4)"
   ATT_FILE=".state/attempts-$ID"; ATT=$(( $(cat "$ATT_FILE" 2>/dev/null || echo 0) + 1 )); echo "$ATT" > "$ATT_FILE"
   if [ "$ATT" -gt "$MAX_ATTEMPTS" ]; then mark "$ID" '!'; say "$ID BLOCKED after $MAX_ATTEMPTS attempts"; continue; fi
+  if [ "$TYPE" = "TOPIC" ] && [ ! -s "site/data/$C/$TOPIC.json" ]; then mark "$ID" '!'; say "$ID BLOCKED: no data file site/data/$C/$TOPIC.json (its DATA task failed)"; continue; fi
   ITER=$((ITER+1)); say "=== $ID ($TYPE $C $TOPIC) attempt $ATT ==="
   FB=""; [ -s ".state/feedback-$ID.txt" ] && FB="
 PREVIOUS ATTEMPT FAILED THE AUTOMATIC CHECK. Fix exactly this:
@@ -74,15 +76,18 @@ $(tail -c 1800 ".state/feedback-$ID.txt")"
 YOUR ONE TASK (do only this, then stop):
 $BODY
 $FB
-Steps: 1) Read .claude/skills/dashboard-builder/references/task-$(echo "$TYPE" | tr 'A-Z' 'a-z').md and follow it. 2) Read the last 25 lines of PROGRESS.md for context. 3) Do the work in small steps, verifying each. 4) Append 3 lines to PROGRESS.md (what you did, decisions, gotchas). 5) Your final message must end with the single word TASK_DONE if finished and verified, or TASK_BLOCKED if impossible (explain why in PROGRESS.md)."
-  LOG="logs/$ID-attempt$ATT.log"
+Steps: 1) Read .claude/skills/dashboard-builder/references/task-$(echo "$TYPE" | tr 'A-Z' 'a-z').md and follow it. 2) Read the last 25 lines of PROGRESS.md for context. 3) Do the work in small steps, verifying each. 4) Append 3 lines to PROGRESS.md (what you did, decisions, gotchas). 5) Your final message must end with the single word TASK_DONE if finished and verified, or TASK_BLOCKED if impossible (explain why in PROGRESS.md).
+This session is recorded to logs/$ID-attempt$ATT.jsonl (used by the automatic data check; do not open that file, only pass its path to scripts)."
+  TRACE="logs/$ID-attempt$ATT.jsonl"; LOG="logs/$ID-attempt$ATT.log"      # TRACE = full tool-call record (proves where data came from)
+  TURNS="$MAX_TURNS"; [ "$TYPE" = "DATA" ] && TURNS="$DATA_TURNS"
   claude -p "$PROMPT" --model "$MODEL" --dangerously-skip-permissions --strict-mcp-config --mcp-config .mcp.json \
-         --max-turns "$MAX_TURNS" > "$LOG" 2>&1 &
+         --max-turns "$TURNS" --output-format stream-json --verbose > "$TRACE" 2> "$LOG.err" &
   CP=$!; ( sleep "$TASK_TIMEOUT"; kill "$CP" 2>/dev/null ) & WD=$!
-  wait "$CP"; kill "$WD" 2>/dev/null; pkill -f "@playwright/mcp" 2>/dev/null
+  wait "$CP"; kill "$WD" 2>/dev/null; pkill -f "@playwright/mcp" 2>/dev/null; pkill -f "europa-mcp" 2>/dev/null
+  python3 scripts/tracelib.py text "$TRACE" > "$LOG" 2>&1; python3 scripts/tracelib.py tools "$TRACE" >> "$LOG" 2>&1
 
   if grep -q "TASK_BLOCKED" "$LOG"; then mark "$ID" '!'; say "$ID reported BLOCKED"; git add -A; git commit -qm "overnight: $ID blocked" ; continue; fi
-  GOUT="$(gate "$TYPE" "$C" "$TOPIC" 2>&1)"; GRC=$?
+  GOUT="$(gate "$TYPE" "$C" "$TOPIC" "$TRACE" 2>&1)"; GRC=$?
   if [ "$GRC" -eq 0 ] && grep -q "TASK_DONE" "$LOG"; then
     mark "$ID" x; rm -f ".state/feedback-$ID.txt"; say "$ID DONE"
   else

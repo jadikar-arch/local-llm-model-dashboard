@@ -318,3 +318,4 @@ logs/
 .state/
 qa/*.png
 .playwright-mcp/
+archive-run2-local/
