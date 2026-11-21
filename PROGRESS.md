@@ -21,6 +21,15 @@ Implementation includes:
 - KPI cards with latest values, peak, average and period information
 - Data table showing all raw data points
 
+## EU-P Polish Implementation
+
+- Added second insight box with additional specific data point
+- Added stacked bar chart showing firm size breakdown by AI adoption 
+- Ensured all number formatting follows project guidelines (1 decimal for percentages)
+- Verified all charts have proper aria-label and role="img" attributes for accessibility
+- Confirmed no console.log or TODO comments remain in the code
+- Maintained all existing functionality while enhancing information density
+
 ## EU-V2 Renewables Topic Implementation
 
 - Created complete site/eu/topics/renewables.js implementation following the topic template pattern

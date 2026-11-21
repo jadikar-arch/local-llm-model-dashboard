@@ -25,7 +25,7 @@
 - [x] EU-V2 | TOPIC | eu | renewables | Write site/eu/topics/renewables.js and register it.
 - [x] EU-V3 | TOPIC | eu | inflation | Write site/eu/topics/inflation.js and register it.
 - [x] EU-Q | QA | eu | - | Run `node scripts/qa.mjs eu` and fix every FAIL until PASS, then one manual Playwright MCP pass.
-- [ ] EU-P | POLISH | eu | - | Polish the EU dashboard using references/polish-checklist.md. Keep QA at PASS.
+- [x] EU-P | POLISH | eu | - | Polish the EU dashboard using references/polish-checklist.md. Keep QA at PASS.
 
 # ---------------- GERMANY (Destatis/GovData via find_data; Eurostat geo=DE is the safe fallback) ----------------
 - [x] DE-D1 | DATA | de | cars | Germany car industry and electric mobility: new passenger car registrations by drive type (electric, hybrid, petrol, diesel) or production. find_data "Pkw Neuzulassungen Elektro". If no German table works within 3 tries use Eurostat road_eqr_carpda with geo=DE and peers.

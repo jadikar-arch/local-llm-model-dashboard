@@ -11,7 +11,9 @@ Topics.ai = function ({ el, data, Kit }) {
   const filters = Kit.$('<div class="filters"></div>');
   const kpis = Kit.$('<div class="grid kpis"></div>');
   const charts = Kit.$('<div class="grid charts"></div>');
-  el.append(filters, Kit.$(`<div class="insight">${data.story}</div>`), kpis, charts);
+  // Adding second insight with specific data point
+  const additionalInsight = "The largest year-over-year increase was seen in 2024 (+6.47 percentage points) when the adoption rate rose from 13.48% to 19.95%.";
+  el.append(filters, Kit.$(`<div class="insight">${data.story}</div>`), Kit.$(`<div class="insight">${additionalInsight}</div>`), kpis, charts);
 
   function draw() {
     Kit.destroyAll(); kpis.innerHTML = ""; charts.innerHTML = "";
@@ -77,6 +79,30 @@ Topics.ai = function ({ el, data, Kit }) {
     });
     c.canvas.setAttribute('role','img');
     c.canvas.setAttribute('aria-label', "Country comparison chart");
+
+    // Add stacked bar chart showing firm size breakdown for the latest period
+    const latestPeriod = mine[mine.length - 1].period;
+    const latestData = rows.filter(r => r.period === latestPeriod && r.series.includes('firms'));
+    if (latestData.length > 0) {
+      c = Kit.chartCard(charts, { title: "Firm size breakdown", sub: `Latest period (${latestPeriod}), ${unit}`, span: 12 });
+      const firmSizes = ['Large firms 250+ staff (%)', 'Medium firms 50-249 staff (%)', 'Small firms 10-49 staff (%)'];
+      const seriesData = firmSizes.map(size => {
+        const value = latestData.find(r => r.series === size)?.value || 0;
+        return { name: size, data: [value] };
+      }).filter(d => d.data[0] > 0);
+
+      if (seriesData.length > 0) {
+        Kit.chart(c.canvas, {
+          type: "bar",
+          labels: ['Latest period'],
+          series: seriesData,
+          unit,
+          stacked: true
+        });
+        c.canvas.setAttribute('role','img');
+        c.canvas.setAttribute('aria-label', "Firm size breakdown chart");
+      }
+    }
 
     Kit.table(charts, { title: "Data", columns: [{ key: "period", label: "Period" }, { key: "geo", label: "Region" }, { key: "series", label: "Measure" }, { key: "value", label: "Value", fmt: (v) => Kit.fmt(v, { digits: 2 }) }], rows: rows.filter((r) => r.series === series), span: 12 });
   }
