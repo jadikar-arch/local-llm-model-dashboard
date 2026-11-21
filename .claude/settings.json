@@ -22,7 +22,20 @@
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
       "WebFetch",
-      "WebSearch"
+      "WebSearch",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
+      "Bash(git show:*)",
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)",
+      "Bash(git tag:*)",
+      "Bash(git stash:*)",
+      "Edit(scripts/**)",
+      "Write(scripts/**)",
+      "Edit(tasks.md)",
+      "Write(tasks.md)",
+      "Edit(CLAUDE.md)",
+      "Write(CLAUDE.md)"
     ]
   }
 }

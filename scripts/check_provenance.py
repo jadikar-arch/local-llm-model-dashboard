@@ -48,8 +48,12 @@ def main(path, trace):
     vals = sorted({r["value"] for r in d.get("rows", []) if isinstance(r.get("value"), (int, float))})
     miss = [v for v in vals if round(v, decimals(v)) not in rounded[decimals(v)] and v not in cands]
     ratio = 1 - len(miss) / max(len(vals), 1)
-    if ratio < THRESH:
-        errs.append(f"only {ratio:.0%} of the {len(vals)} distinct values appear in the europa tool results (need {THRESH:.0%}). Not found, e.g.: {miss[:8]}. Copy numbers unchanged from the tool output; never invent, estimate, interpolate or compute new values")
+    # chance level: how many values that are certainly NOT in the data would also "match" (small integers etc.)
+    fake = [round(v * 1.0731 + 0.37, decimals(v)) for v in vals]
+    chance = sum(1 for v in fake if v in rounded[decimals(v)] or v in cands) / max(len(fake), 1)
+    need = 0.98 if chance >= 0.5 else THRESH
+    if ratio < need:
+        errs.append(f"only {ratio:.0%} of the {len(vals)} distinct values appear in the europa tool results (need {need:.0%}, chance level {chance:.0%}). Not found, e.g.: {miss[:8]}. Copy numbers unchanged from the tool output; never invent, estimate, interpolate or compute new values")
     ids = [t for t in re.findall(r"[A-Za-z0-9_\-]{5,}", str(d.get("source", ""))) if re.search(r"\d|_", t)]
     if ids and not any(i.lower() in text.lower() for i in ids):
         errs.append(f"dataset id from 'source' ({ids}) never appears in the tool results: use the id the tool returned")

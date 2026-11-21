@@ -27,6 +27,14 @@ BR="overnight/$(date +%Y%m%d-%H%M)"; git checkout -q -b "$BR" 2>/dev/null; say "
 export ANTHROPIC_BASE_URL="http://localhost:11434" ANTHROPIC_AUTH_TOKEN="ollama" ANTHROPIC_API_KEY=""
 export ANTHROPIC_MODEL="$MODEL" ANTHROPIC_DEFAULT_OPUS_MODEL="$MODEL" ANTHROPIC_DEFAULT_SONNET_MODEL="$MODEL" \
        ANTHROPIC_DEFAULT_HAIKU_MODEL="$MODEL" CLAUDE_CODE_SUBAGENT_MODEL="$MODEL"
+# Isolate the local model from the human's personal Claude setup (plugins like superpowers, hooks, global CLAUDE.md, 16k tokens of noise):
+CFG="$ROOT/.state/claude-home"; mkdir -p "$CFG"
+python3 - "$CFG" "$ROOT" <<'PY'
+import json,sys; cfg,root=sys.argv[1:]
+json.dump({"hasCompletedOnboarding":True,"projects":{root:{"hasTrustDialogAccepted":True,"allowedTools":[]}}},open(cfg+"/.claude.json","w"))
+PY
+export CLAUDE_CONFIG_DIR="$CFG" MAX_MCP_OUTPUT_TOKENS=12000    # a single tool result may not exceed ~12k tokens (64k window)
+TOOLS="Bash,Read,Edit,Write,Glob,Grep,ToolSearch"
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 DISABLE_TELEMETRY=1 DISABLE_AUTOUPDATER=1
 
 # ---- background helpers ------------------------------------------------------
@@ -78,16 +86,28 @@ $BODY
 $FB
 Steps: 1) Read .claude/skills/dashboard-builder/references/task-$(echo "$TYPE" | tr 'A-Z' 'a-z').md and follow it. 2) Read the last 25 lines of PROGRESS.md for context. 3) Do the work in small steps, verifying each. 4) Append 3 lines to PROGRESS.md (what you did, decisions, gotchas). 5) Your final message must end with the single word TASK_DONE if finished and verified, or TASK_BLOCKED if impossible (explain why in PROGRESS.md).
 This session is recorded to logs/$ID-attempt$ATT.jsonl (used by the automatic data check; do not open that file, only pass its path to scripts)."
+  cp tasks.md .state/tasks.before
   TRACE="logs/$ID-attempt$ATT.jsonl"; LOG="logs/$ID-attempt$ATT.log"      # TRACE = full tool-call record (proves where data came from)
   TURNS="$MAX_TURNS"; [ "$TYPE" = "DATA" ] && TURNS="$DATA_TURNS"
   claude -p "$PROMPT" --model "$MODEL" --dangerously-skip-permissions --strict-mcp-config --mcp-config .mcp.json \
-         --max-turns "$TURNS" --output-format stream-json --verbose > "$TRACE" 2> "$LOG.err" &
+         --setting-sources project,local --tools "$TOOLS" --max-turns "$TURNS" --output-format stream-json --verbose > "$TRACE" 2> "$LOG.err" &
   CP=$!; ( sleep "$TASK_TIMEOUT"; kill "$CP" 2>/dev/null ) & WD=$!
   wait "$CP"; kill "$WD" 2>/dev/null; pkill -f "@playwright/mcp" 2>/dev/null; pkill -f "europa-mcp" 2>/dev/null
   python3 scripts/tracelib.py text "$TRACE" > "$LOG" 2>&1; python3 scripts/tracelib.py tools "$TRACE" >> "$LOG" 2>&1
 
+  say "$ID stats: $(python3 scripts/tracelib.py stats "$TRACE")"
+  TAMPER=""
+  if ! cmp -s tasks.md .state/tasks.before; then TAMPER="$TAMPER tasks.md"; cp .state/tasks.before tasks.md; fi
+  CH="$(git status --porcelain -- scripts .claude CLAUDE.md .mcp.json PLAN.md | awk '{print $2}' | tr '\n' ' ')"
+  if [ -n "$CH" ]; then TAMPER="$TAMPER $CH"; git checkout -q -- scripts .claude CLAUDE.md .mcp.json PLAN.md 2>/dev/null; git clean -fdq -- scripts .claude 2>/dev/null; fi
+  AUDIT="$(python3 scripts/tracelib.py audit "$TRACE" 2>&1)"; ARC=$?
+  [ -n "$TAMPER" ] && { AUDIT="$AUDIT
+RULE VIOLATION: you modified protected files (reverted):$TAMPER"; ARC=1; }
+  [ "$ARC" -ne 0 ] && say "$ID VIOLATION: $(echo "$AUDIT" | tr '\n' ' ' | cut -c1-300)"
   if grep -q "TASK_BLOCKED" "$LOG"; then mark "$ID" '!'; say "$ID reported BLOCKED"; git add -A; git commit -qm "overnight: $ID blocked" ; continue; fi
   GOUT="$(gate "$TYPE" "$C" "$TOPIC" "$TRACE" 2>&1)"; GRC=$?
+  [ "$ARC" -ne 0 ] && { GRC=1; GOUT="$AUDIT
+$GOUT"; }
   if [ "$GRC" -eq 0 ] && grep -q "TASK_DONE" "$LOG"; then
     mark "$ID" x; rm -f ".state/feedback-$ID.txt"; say "$ID DONE"
   else
