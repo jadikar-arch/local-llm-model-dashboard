@@ -11,6 +11,8 @@ const url = target === "home" ? `http://localhost:${port}/site/index.html` : `ht
 
 function findChromium() {
   if (process.env.CHROMIUM_PATH) return process.env.CHROMIUM_PATH;
+  const chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"; // the cached playwright chromium on this Mac is incomplete
+  if (existsSync(chrome)) return chrome;
   const base = join(homedir(), "Library/Caches/ms-playwright");
   if (existsSync(base)) for (const d of readdirSync(base).filter((x) => x.startsWith("chromium-")).sort().reverse()) {
     for (const p of ["chrome-mac/Chromium.app/Contents/MacOS/Chromium", "chrome-mac-arm64/Chromium.app/Contents/MacOS/Chromium", "chrome-linux/chrome"]) {
@@ -26,6 +28,7 @@ const browser = await chromium.launch({ executablePath: findChromium(), headless
 
 for (const width of [1440, 390]) {
   const page = await browser.newPage({ viewport: { width, height: 900 } });
+  await page.route("**/favicon.ico", (r) => r.fulfill({ status: 204, body: "" }));
   const errors = []; const failed = [];
   page.on("console", (m) => m.type() === "error" && errors.push(m.text().slice(0, 160)));
   page.on("pageerror", (e) => errors.push("pageerror: " + e.message.slice(0, 160)));

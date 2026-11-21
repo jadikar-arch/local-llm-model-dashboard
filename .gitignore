@@ -317,3 +317,4 @@ Thumbs.db
 logs/
 .state/
 qa/*.png
+.playwright-mcp/
