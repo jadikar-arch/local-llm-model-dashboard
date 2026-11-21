@@ -86,6 +86,19 @@ Topics.housing = function ({ el, data, Kit }) {
       el.appendChild(insightBox);
     }
 
+    // Additional insight: calculate the change from the first to last period
+    if (mine.length > 1) {
+      const first = mine[0];
+      const last = mine[mine.length - 1];
+      const change = last.value - first.value;
+      const changePct = ((last.value - first.value) / Math.abs(first.value)) * 100;
+
+      if (Math.abs(change) > 0.1) { // Only show meaningful changes
+        const changeInsight = Kit.$(`<div class="insight">This ${series.toLowerCase()} changed by ${Kit.fmt(change, { digits: 1 })} (${Kit.fmt(changePct, { digits: 1 })}% from ${first.period})</div>`);
+        el.appendChild(changeInsight);
+      }
+    }
+
     Kit.table(charts, { title: "Data", columns: [{ key: "period", label: "Period" }, { key: "geo", label: "Region" }, { key: "series", label: "Measure" }, { key: "value", label: "Value", fmt: (v) => Kit.fmt(v, { digits: 2 }) }], rows: rows.filter((r) => r.series === series), span: 12 });
   }
 

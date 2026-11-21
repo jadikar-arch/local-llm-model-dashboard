@@ -14,7 +14,7 @@
 - [x] NL-V2 | TOPIC | nl | energy | Write site/nl/topics/energy.js and register it. Same minimum content.
 - [x] NL-V3 | TOPIC | nl | prices | Write site/nl/topics/prices.js and register it. Same minimum content.
 - [x] NL-Q | QA | nl | - | Run `node scripts/qa.mjs nl` and fix every FAIL until QA RESULT: PASS. Then use the Playwright MCP (browser_snapshot, browser_console_messages) for one manual pass of each tab.
-- [ ] NL-P | POLISH | nl | - | Raise professional quality of the NL dashboard using references/polish-checklist.md. Keep QA at PASS.
+- [x] NL-P | POLISH | nl | - | Raise professional quality of the NL dashboard using references/polish-checklist.md. Keep QA at PASS.
 
 # ---------------- EUROPEAN UNION (Eurostat tools: eurostat_*) ----------------
 - [x] EU-D1 | DATA | eu | ai | EU enterprises using artificial intelligence (Eurostat isoc_eb_ai or similar, use find_data "artificial intelligence enterprises"). Compare 8-12 member states incl. NL and DE plus EU27 average, by year.
