@@ -1,6 +1,6 @@
-// AI topic for EU dashboards
+// Artificial Intelligence topic for EU dashboard
 window.Topics = window.Topics || {};
-Topics.AI = function ({ el, data, Kit }) {
+Topics.ai = function ({ el, data, Kit }) {
   const rows = data.rows;
   const geos = Kit.uniq(rows, "geo");
   const seriesList = [...new Set(rows.map((r) => r.series))];           // keep file order
@@ -50,23 +50,25 @@ Topics.AI = function ({ el, data, Kit }) {
     const cmp = items.filter((x) => x.r).sort((a, b) => b.r.value - a.r.value);
     Kit.chart(c.canvas, { type: "bar", horizontal: true, labels: cmp.map((x) => x.n), series: [{ name: series, data: cmp.map((x) => x.r.value) }], unit });
 
-    // Extra visual: Country-compare bar chart for the main AI measure
-    const aiSeries = 'Enterprises using AI (%)';
-    const aiRows = rows.filter(r => r.series === aiSeries);
-    const latestAiByGeo = geos.map((g) => ({ g, r: Kit.latest(aiRows.filter((r) => r.geo === g)) })).filter((x) => x.r);
-    const topCountries = latestAiByGeo.sort((a, b) => b.r.value - a.r.value).slice(0, 5).map((x) => x.g);
-    const countryCompareData = topCountries.map(g => {
-      const row = Kit.latest(aiRows.filter(r => r.geo === g));
-      return { geo: g, value: row ? row.value : 0 };
-    });
+    // Extra chart: Country-compare bar chart (for better visual comparison)
+    c = Kit.chartCard(charts, { title: "Country comparison", sub: `Latest period, ${unit}`, span: 12 });
+    const latestRows = rows.filter((r) => r.series === series && r.value != null);
+    const latestByGeo = latestRows.reduce((acc, row) => {
+      if (!acc[row.geo]) acc[row.geo] = [];
+      acc[row.geo].push(row);
+      return acc;
+    }, {});
 
-    c = Kit.chartCard(charts, { title: "Top 5 countries by AI adoption", sub: `Latest period, ${unit}`, span: 12 });
+    const countryData = Object.entries(latestByGeo)
+      .map(([geo, rows]) => ({ geo, value: rows[0].value }))  // Take the latest value for each geo
+      .sort((a, b) => b.value - a.value);
+
     Kit.chart(c.canvas, {
       type: "bar",
-      labels: countryCompareData.map(d => d.geo),
-      series: [{ name: aiSeries, data: countryCompareData.map(d => d.value) }],
+      labels: countryData.map(d => d.geo),
+      series: [{ name: series, data: countryData.map(d => d.value) }],
       unit,
-      horizontal: false
+      span: 12
     });
 
     Kit.table(charts, { title: "Data", columns: [{ key: "period", label: "Period" }, { key: "geo", label: "Region" }, { key: "series", label: "Measure" }, { key: "value", label: "Value", fmt: (v) => Kit.fmt(v, { digits: 2 }) }], rows: rows.filter((r) => r.series === series), span: 12 });
