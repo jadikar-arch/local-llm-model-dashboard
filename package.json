@@ -1,0 +1,1 @@
+{"name":"europa-dashboards","private":true,"type":"module","scripts":{"qa":"node scripts/qa.mjs"},"devDependencies":{"playwright-core":"^1.65.1"}}

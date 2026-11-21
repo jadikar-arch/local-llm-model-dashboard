@@ -1,0 +1,2 @@
+# HOME task
+Create `site/index.html` (links to `nl/index.html`, `eu/index.html`, `de/index.html`). Use `shared/theme.css`, a topbar like the dashboards, a hero (title + one sentence), then `<div class="landing">` with exactly 3 `<a class="card" href="nl/index.html">` cards: country name, 3 `.pill` topics, and one headline number loaded with `fetch("data/<c>/<topic>.json")` (latest value of the first series, with unit and period). Add a theme toggle that shares `localStorage.theme`. Check with `node scripts/qa.mjs home`.

@@ -312,3 +312,8 @@ Thumbs.db
 *.sqlite3-journal
 *.sqlite3-wal
 *.sqlite3-sh nad
+
+# overnight run artefacts
+logs/
+.state/
+qa/*.png
