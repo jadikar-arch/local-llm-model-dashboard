@@ -44,9 +44,14 @@ Topics.energy = function ({ el, data, Kit }) {
 
     // Chart 2 (compare latest values). Many regions -> bar per region. One region -> bar per measure with the same unit.
     c = Kit.chartCard(charts, { title: geos.length > 1 ? `Regions compared: ${series}` : "Measures compared (latest)", sub: `Latest period, ${unit}`, span: 4 });
-    const items = geos.length > 1
-      ? geos.map((g) => ({ n: g, r: Kit.latest(rows.filter((r) => r.geo === g && r.series === series)) }))
-      : seriesList.filter((s) => unitOf(s) === unit).map((s) => ({ n: s, r: Kit.latest(rows.filter((r) => r.series === s)) }));
+    let items;
+    if (geos.length > 1) {
+      // For region comparison, exclude the Netherlands aggregate when other regions exist
+      const nonNationalGeos = geos.filter(g => g !== "Netherlands");
+      items = nonNationalGeos.map((g) => ({ n: g, r: Kit.latest(rows.filter((r) => r.geo === g && r.series === series)) }));
+    } else {
+      items = seriesList.filter((s) => unitOf(s) === unit).map((s) => ({ n: s, r: Kit.latest(rows.filter((r) => r.series === s)) }));
+    }
     const cmp = items.filter((x) => x.r).sort((a, b) => b.r.value - a.r.value);
     Kit.chart(c.canvas, { type: "bar", horizontal: true, labels: cmp.map((x) => x.n), series: [{ name: series, data: cmp.map((x) => x.r.value) }], unit });
 
@@ -57,6 +62,19 @@ Topics.energy = function ({ el, data, Kit }) {
         c = Kit.chartCard(charts, { title: "Capacity breakdown by type", sub: "MW, latest period", span: 12 });
         const p = Kit.pivot(capacityRows, "series");
         Kit.chart(c.canvas, { type: "bar", labels: p.labels, series: p.names.map((n) => ({ name: n, data: p.map[n] })), unit, stacked: true });
+      }
+    }
+
+    // Second insight box with additional information
+    if (series === "Installed capacity (MW)") {
+      const maxRegion = geos.reduce((max, g) => {
+        const latest = Kit.latest(rows.filter(r => r.geo === g && r.series === series));
+        return !latest || (max && max.value > latest.value) ? max : latest;
+      }, null);
+
+      if (maxRegion && maxRegion.geo !== "Netherlands") {
+        const insightBox = Kit.$(`<div class="insight">The highest solar capacity was in ${maxRegion.geo} at ${Kit.fmt(maxRegion.value, { digits: 0 })} MW.</div>`);
+        el.appendChild(insightBox);
       }
     }
 
