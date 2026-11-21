@@ -4,7 +4,7 @@
 # Usage:  bash scripts/run-overnight.sh            (see PLAN.md section 2 for the one-time Ollama setup)
 set -u
 cd "$(dirname "$0")/.."
-ROOT="$PWD"
+ROOT="$(pwd -P)"      # real path: Claude Code resolves symlinks (e.g. /tmp -> /private/tmp) when it checks project trust
 MODEL="${MODEL:-qwen3-coder:30b}"
 PORT="${PORT:-8000}"
 DEADLINE_HOURS="${DEADLINE_HOURS:-9}"      # hard stop
@@ -13,7 +13,7 @@ MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
 MAX_TURNS="${MAX_TURNS:-45}"
 DATA_TURNS="${DATA_TURNS:-60}"          # data tasks explore tools first
 mkdir -p logs .state qa
-START=$(date +%s); DEADLINE=$((START + DEADLINE_HOURS*3600))
+START=$(date +%s); DEADLINE=$(awk -v s="$START" -v h="$DEADLINE_HOURS" 'BEGIN{printf "%d", s + h*3600}')   # DEADLINE_HOURS may be decimal, e.g. 0.2
 say() { echo "[$(date +%H:%M:%S)] $*" | tee -a logs/driver.log; }
 
 # ---- preflight -------------------------------------------------------------
@@ -40,7 +40,8 @@ export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 DISABLE_TELEMETRY=1 DISABLE_AU
 # ---- background helpers ------------------------------------------------------
 caffeinate -dimsu -w $$ >/dev/null 2>&1 &                       # keep the Mac awake
 python3 -m http.server "$PORT" >/dev/null 2>&1 & SERVER=$!
-trap 'kill $SERVER 2>/dev/null; say "driver stopped"' EXIT
+trap 'exit 130' INT TERM
+trap '[ -n "${CP:-}" ] && kill -TERM -- -"$CP" 2>/dev/null; kill $SERVER 2>/dev/null; say "driver stopped"' EXIT   # CP = process group of the current claude session
 sleep 1
 
 
@@ -85,22 +86,32 @@ YOUR ONE TASK (do only this, then stop):
 $BODY
 $FB
 Steps: 1) Read .claude/skills/dashboard-builder/references/task-$(echo "$TYPE" | tr 'A-Z' 'a-z').md and follow it. 2) Read the last 25 lines of PROGRESS.md for context. 3) Do the work in small steps, verifying each. 4) Append 3 lines to PROGRESS.md (what you did, decisions, gotchas). 5) Your final message must end with the single word TASK_DONE if finished and verified, or TASK_BLOCKED if impossible (explain why in PROGRESS.md).
+Write TASK_DONE (or TASK_BLOCKED) only as the last word of your final reply; never run echo TASK_DONE in Bash. Do not edit files under .claude/ , scripts/ , tasks.md or CLAUDE.md.
 This session is recorded to logs/$ID-attempt$ATT.jsonl (used by the automatic data check; do not open that file, only pass its path to scripts)."
   cp tasks.md .state/tasks.before
   TRACE="logs/$ID-attempt$ATT.jsonl"; LOG="logs/$ID-attempt$ATT.log"      # TRACE = full tool-call record (proves where data came from)
   TURNS="$MAX_TURNS"; [ "$TYPE" = "DATA" ] && TURNS="$DATA_TURNS"
-  claude -p "$PROMPT" --model "$MODEL" --dangerously-skip-permissions --strict-mcp-config --mcp-config .mcp.json \
-         --setting-sources project,local --tools "$TOOLS" --max-turns "$TURNS" --output-format stream-json --verbose > "$TRACE" 2> "$LOG.err" &
-  CP=$!; ( sleep "$TASK_TIMEOUT"; kill "$CP" 2>/dev/null ) & WD=$!
-  wait "$CP"; kill "$WD" 2>/dev/null; pkill -f "@playwright/mcp" 2>/dev/null; pkill -f "europa-mcp" 2>/dev/null
+  # DATA tasks see only the europa MCP with all tool schemas loaded up front (no deferred ToolSearch guessing); every other task sees only Playwright.
+  MCPCFG=".mcp.ui.json"; TSEARCH="true"; [ "$TYPE" = "DATA" ] && { MCPCFG=".mcp.data.json"; TSEARCH="false"; }
+  # The session runs in its OWN process group (setsid), so cleanup kills exactly its MCP servers and nothing else on the machine.
+  ENABLE_TOOL_SEARCH="$TSEARCH" python3 -c 'import os,sys; os.setsid(); os.execvp(sys.argv[1], sys.argv[1:])' \
+    claude -p "$PROMPT" --model "$MODEL" --dangerously-skip-permissions --strict-mcp-config --mcp-config "$MCPCFG" \
+         --setting-sources project,local --tools "$TOOLS" --max-turns "$TURNS" --output-format stream-json --verbose < /dev/null > "$TRACE" 2> "$LOG.err" &
+  CP=$!; ( sleep "$TASK_TIMEOUT"; kill -TERM -- -"$CP" 2>/dev/null ) & WD=$!
+  wait "$CP"; kill "$WD" 2>/dev/null; kill -TERM -- -"$CP" 2>/dev/null; sleep 1; kill -KILL -- -"$CP" 2>/dev/null; CP=""
   python3 scripts/tracelib.py text "$TRACE" > "$LOG" 2>&1; python3 scripts/tracelib.py tools "$TRACE" >> "$LOG" 2>&1
 
   say "$ID stats: $(python3 scripts/tracelib.py stats "$TRACE")"
   TAMPER=""
   if ! cmp -s tasks.md .state/tasks.before; then TAMPER="$TAMPER tasks.md"; cp .state/tasks.before tasks.md; fi
-  CH="$(git status --porcelain -- scripts .claude CLAUDE.md .mcp.json PLAN.md | awk '{print $2}' | tr '\n' ' ')"
-  if [ -n "$CH" ]; then TAMPER="$TAMPER $CH"; git checkout -q -- scripts .claude CLAUDE.md .mcp.json PLAN.md 2>/dev/null; git clean -fdq -- scripts .claude 2>/dev/null; fi
+  # HIGH severity (fails the attempt): changes to the gates / harness. LOW (reverted + logged, attempt still judged on its deliverable): edits to the skill docs.
+  HIGHP="scripts CLAUDE.md PLAN.md .mcp.json .mcp.data.json .mcp.ui.json .claude/settings.json"
+  CH="$(git status --porcelain -- $HIGHP | awk '{print $2}' | tr '\n' ' ')"
+  if [ -n "$CH" ]; then TAMPER="$TAMPER $CH"; git ls-files -m -d -- $HIGHP | xargs git checkout -q -- 2>/dev/null; git clean -fdq -- scripts 2>/dev/null; fi
+  CHL="$(git status --porcelain -- .claude/skills | awk '{print $2}' | tr '\n' ' ')"
+  if [ -n "$CHL" ]; then say "$ID NOTE: reverted edits to skill docs: $CHL"; git ls-files -m -d -- .claude/skills | xargs git checkout -q -- 2>/dev/null; git clean -fdq -- .claude/skills 2>/dev/null; fi
   AUDIT="$(python3 scripts/tracelib.py audit "$TRACE" 2>&1)"; ARC=$?
+  echo "$AUDIT" | grep -q "^NOTE" && say "$ID $(echo "$AUDIT" | grep "^NOTE" | tr '\n' ' ' | cut -c1-300)"
   [ -n "$TAMPER" ] && { AUDIT="$AUDIT
 RULE VIOLATION: you modified protected files (reverted):$TAMPER"; ARC=1; }
   [ "$ARC" -ne 0 ] && say "$ID VIOLATION: $(echo "$AUDIT" | tr '\n' ' ' | cut -c1-300)"

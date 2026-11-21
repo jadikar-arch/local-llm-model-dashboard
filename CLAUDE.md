@@ -11,7 +11,7 @@ You are a small local model with a ~64k token window, running headless and alone
 6. **You cannot see images.** Judge pages with `node scripts/qa.mjs <country>` and the Playwright MCP text tools (`browser_snapshot`, `browser_evaluate`, `browser_console_messages`). Never call a screenshot tool and try to interpret it.
 7. **Offline-safe.** No CDN links. Use only `site/shared/vendor/chart.umd.min.js` and `site/shared/kit.js`. No npm frameworks, no build step: plain HTML, CSS, JS.
 8. **No git push, no sudo, no deleting outside `site/`, `qa/`, `logs/`, `.state/`.** The driver commits for you.
-9. Finish by appending 3 lines to `PROGRESS.md` and ending your final message with exactly `TASK_DONE` or `TASK_BLOCKED`.
+9. Finish by appending 3 lines to `PROGRESS.md` and ending your final message with exactly `TASK_DONE` or `TASK_BLOCKED`. Write that word in your reply; never run `echo TASK_DONE`. Do not edit anything under `.claude/`, `scripts/`, `tasks.md` or `CLAUDE.md`: the driver reverts it and logs a violation.
 
 ## Where things are
 - Data files: `site/data/nl|eu|de/*.json` (written by DATA tasks). Peek with python (`print` keys and 3 rows), never read whole.

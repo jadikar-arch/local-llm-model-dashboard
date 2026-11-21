@@ -1,0 +1,5 @@
+{
+  "mcpServers": {
+    "europa": { "type": "stdio", "command": "uvx", "args": ["europa-mcp"], "env": {} }
+  }
+}

@@ -1,6 +1,5 @@
 {
   "permissions": {
-    "defaultMode": "bypassPermissions",
     "allow": [
       "Bash",
       "Read",
@@ -18,24 +17,19 @@
       "Bash(git push:*)",
       "Bash(git reset --hard:*)",
       "Bash(git clean:*)",
+      "Bash(git show:*)",
+      "Bash(git tag:*)",
+      "Bash(git stash:*)",
+      "Bash(git checkout:*)",
+      "Bash(git restore:*)",
+      "Bash(curl:*)",
+      "Bash(wget:*)",
       "Read(./.env)",
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
       "WebFetch",
-      "WebSearch",
-      "Bash(curl:*)",
-      "Bash(wget:*)",
-      "Bash(git show:*)",
-      "Bash(git checkout:*)",
-      "Bash(git restore:*)",
-      "Bash(git tag:*)",
-      "Bash(git stash:*)",
-      "Edit(scripts/**)",
-      "Write(scripts/**)",
-      "Edit(tasks.md)",
-      "Write(tasks.md)",
-      "Edit(CLAUDE.md)",
-      "Write(CLAUDE.md)"
-    ]
+      "WebSearch"
+    ],
+    "defaultMode": "bypassPermissions"
   }
 }

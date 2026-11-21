@@ -3,14 +3,14 @@ Output: `site/data/<country>/<topic>.json` (format: `references/data-contract.md
 
 ## Your data tools (the ONLY allowed source of numbers)
 `mcp__europa__find_data`, `cbs_search`, `cbs_describe`, `cbs_codes`, `cbs_data` (NL), `eurostat_search`, `eurostat_describe`, `eurostat_codes`, `eurostat_data` (EU, and any country), `govdata_search`, `govdata_table` (DE Destatis).
-They may be deferred: if a tool name is not callable, run ToolSearch with query `select:mcp__europa__find_data` (or the tool you need) once.
-No WebFetch, no WebSearch, no numbers from memory, no estimates.
+They are already loaded: call them directly. A "missing argument" error names the exact parameter you must use, so read it and retry (list-valued parameters like `measures` need a list).
+No WebFetch, no WebSearch, no numbers from memory, no estimates. Never write a data file unless a europa tool returned those numbers to you in this session.
 
 ## Steps
 1. **Find**: use the search tool named in the brief (NL: `cbs_search`, EU: `eurostat_search` or `find_data`, DE: `find_data`). Pick ONE table that matches the brief; note its id.
 2. **Describe**: `cbs_describe` / `eurostat_describe` on that id to see the dimensions (time, region, measure). Use `*_codes` to get exact codes for the filters you want. If the table is unusable (no recent periods, no values), try the next candidate; after 3 failed tables use the fallback in the brief.
 3. **Fetch small**: call `cbs_data` / `eurostat_data` / `govdata_table` WITH filters (regions, measures, period range) so the result is at most ~250 rows. Never request a whole table. If the answer is huge or cut off, narrow the filters and call again.
-4. **Write the JSON** with ONE `Write` call. Copy every `value` exactly as the tool returned it (same digits). Unavailable values are `null`, never filled in. Convert periods: `2021MM03`->`2021-03`, `2021KW01`->`2021Q1`, `2021JJ00`->`2021`. If series have different units add `"units": {"<series>": "<unit>"}` and keep `"unit"` for the main one.
+4. **Write the JSON** with ONE `Write` call. Copy every `value` exactly as the tool returned it (same digits). Unavailable values are `null`, never filled in. Use ONE period type per series (all yearly, or all monthly, or all quarterly). Never repeat a value for other periods to reach the 20-row minimum: the check rejects copied-forward values and mixed granularities. If you have too few rows, fetch a longer period, more regions or more measures. Convert periods: `2021MM03`->`2021-03`, `2021KW01`->`2021Q1`, `2021JJ00`->`2021`. If series have different units add `"units": {"<series>": "<unit>"}` and keep `"unit"` for the main one.
 5. **Story**: run a short python snippet that prints the first and last value, the change and the maximum per series; then `Edit` the `story` field with 1-3 sentences that use exactly those numbers.
 6. **Check** (both must print OK; fix and rerun until they do):
    - `python3 scripts/validate_data.py site/data/<c>/<topic>.json`
