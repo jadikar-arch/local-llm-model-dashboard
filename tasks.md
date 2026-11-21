@@ -32,7 +32,7 @@
 - [x] DE-D2 | DATA | de | energy | Germany Energiewende: electricity generation by source (wind, solar, coal, gas, nuclear) or renewable share. find_data "Stromerzeugung erneuerbare". Fallback Eurostat nrg_ind_ren / nrg_bal geo=DE.
 - [x] DE-D3 | DATA | de | prices | Germany inflation and wages: consumer price index annual change, real wage or earnings index. find_data "Verbraucherpreisindex". Fallback Eurostat prc_hicp_manr geo=DE plus lc_lci_r2_a.
 - [x] DE-S1 | SHELL | de | - | Create site/de/index.html and site/de/app.js with Kit.mount for topics cars, energy, prices (stubs first).
-- [ ] DE-V1 | TOPIC | de | cars | Write site/de/topics/cars.js and register it.
+- [x] DE-V1 | TOPIC | de | cars | Write site/de/topics/cars.js and register it.
 - [ ] DE-V2 | TOPIC | de | energy | Write site/de/topics/energy.js and register it.
 - [ ] DE-V3 | TOPIC | de | prices | Write site/de/topics/prices.js and register it.
 - [ ] DE-Q | QA | de | - | Run `node scripts/qa.mjs de` and fix every FAIL until PASS, then one manual Playwright MCP pass.
