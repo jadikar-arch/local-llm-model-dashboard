@@ -23,7 +23,7 @@
 - [x] EU-S1 | SHELL | eu | - | Create site/eu/index.html and site/eu/app.js with Kit.mount for topics ai, renewables, inflation (stubs first).
 - [x] EU-V1 | TOPIC | eu | ai | Write site/eu/topics/ai.js and register it. Country-compare bar plus time line, country filter.
 - [x] EU-V2 | TOPIC | eu | renewables | Write site/eu/topics/renewables.js and register it.
-- [ ] EU-V3 | TOPIC | eu | inflation | Write site/eu/topics/inflation.js and register it.
+- [x] EU-V3 | TOPIC | eu | inflation | Write site/eu/topics/inflation.js and register it.
 - [ ] EU-Q | QA | eu | - | Run `node scripts/qa.mjs eu` and fix every FAIL until PASS, then one manual Playwright MCP pass.
 - [ ] EU-P | POLISH | eu | - | Polish the EU dashboard using references/polish-checklist.md. Keep QA at PASS.
 
