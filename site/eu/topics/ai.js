@@ -23,10 +23,10 @@ Topics.ai = function ({ el, data, Kit }) {
     const avg = mine.reduce((s, r) => s + r.value, 0) / mine.length;
 
     const isRate = /%/.test(unit);   // rates change in percentage points, everything else in percent
-    Kit.kpi(kpis, { label: `Latest (${last.period})`, value: last.value, unit, delta: prev ? (isRate ? last.value - prev.value : Kit.pct(last.value, prev.value)) : null, deltaUnit: isRate ? " pp" : "%", note: "vs previous period" });
-    Kit.kpi(kpis, { label: "Peak", value: peak.value, unit, note: peak.period });
-    Kit.kpi(kpis, { label: "Average", value: avg, unit });
-    Kit.kpi(kpis, { label: "Periods", value: mine.length, unit: `${mine[0].period} to ${last.period}`, digits: 0 });
+    Kit.kpi(kpis, { label: `Latest adoption rate (${last.period})`, value: last.value, unit, delta: prev ? (isRate ? last.value - prev.value : Kit.pct(last.value, prev.value)) : null, deltaUnit: isRate ? " pp" : "%", note: "vs previous period" });
+    Kit.kpi(kpis, { label: "Highest adoption rate", value: peak.value, unit, note: peak.period });
+    Kit.kpi(kpis, { label: "Average adoption rate", value: avg, unit });
+    Kit.kpi(kpis, { label: "Time period", value: mine.length, unit: `${mine[0].period} to ${last.period}`, digits: 0 });
 
     // Chart 1 (trend). Many regions -> selected region plus the 5 highest. One region -> all measures that share this unit.
     let c = Kit.chartCard(charts, { title: `${series}: trend`, sub: `${unit}, ${mine[0].period} to ${last.period}`, span: 8 });
@@ -36,6 +36,8 @@ Topics.ai = function ({ el, data, Kit }) {
       const picks = [...new Set([geo, ...top])];
       const p = Kit.pivot(rows.filter((r) => r.series === series && picks.includes(r.geo)), "geo");
       Kit.chart(c.canvas, { type: "line", labels: p.labels, series: p.names.map((n) => ({ name: n, data: p.map[n] })), unit, area: false });
+      c.canvas.setAttribute('role','img');
+      c.canvas.setAttribute('aria-label', `${series}: trend chart`);
     } else {
       const same = seriesList.filter((s) => unitOf(s) === unit).slice(0, 5);
       const p = Kit.pivot(rows.filter((r) => same.includes(r.series)), "series");
@@ -47,8 +49,11 @@ Topics.ai = function ({ el, data, Kit }) {
     const items = geos.length > 1
       ? geos.map((g) => ({ n: g, r: Kit.latest(rows.filter((r) => r.geo === g && r.series === series)) }))
       : seriesList.filter((s) => unitOf(s) === unit).map((s) => ({ n: s, r: Kit.latest(rows.filter((r) => r.series === s)) }));
-    const cmp = items.filter((x) => x.r).sort((a, b) => b.r.value - a.r.value);
+    // Exclude EU27/aggregate when other regions exist to avoid dominating the scale
+    const cmp = items.filter((x) => x.r && x.n !== "EU27").sort((a, b) => b.r.value - a.r.value);
     Kit.chart(c.canvas, { type: "bar", horizontal: true, labels: cmp.map((x) => x.n), series: [{ name: series, data: cmp.map((x) => x.r.value) }], unit });
+    c.canvas.setAttribute('role','img');
+    c.canvas.setAttribute('aria-label', `${geos.length > 1 ? `Regions compared: ${series}` : "Measures compared (latest)"} chart`);
 
     // Extra chart: Country-compare bar chart (for better visual comparison)
     c = Kit.chartCard(charts, { title: "Country comparison", sub: `Latest period, ${unit}`, span: 12 });
@@ -70,6 +75,8 @@ Topics.ai = function ({ el, data, Kit }) {
       unit,
       span: 12
     });
+    c.canvas.setAttribute('role','img');
+    c.canvas.setAttribute('aria-label', "Country comparison chart");
 
     Kit.table(charts, { title: "Data", columns: [{ key: "period", label: "Period" }, { key: "geo", label: "Region" }, { key: "series", label: "Measure" }, { key: "value", label: "Value", fmt: (v) => Kit.fmt(v, { digits: 2 }) }], rows: rows.filter((r) => r.series === series), span: 12 });
   }
