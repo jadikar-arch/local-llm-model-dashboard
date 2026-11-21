@@ -5,10 +5,10 @@ description: Build interactive, professional static dashboards from europa MCP o
 
 # Dashboard builder (for a small local model)
 
-Pipeline per country: **DATA x3 -> SHELL -> TOPIC x3 -> QA -> POLISH**, then HOME and final docs.
+Pipeline per country: **SHELL -> TOPIC x3 -> QA -> POLISH**, then HOME and final docs. Data is pre-built (read-only).
 
 1. Open `tasks.md` task given to you. Read `references/task-<type>.md` for that type only.
-2. Data first, real and small (80-250 rows per topic, long format). See `references/data-contract.md`.
+2. Data is already in `site/data/<c>/<topic>.json` (long format, see `references/data-contract.md`). Never edit it.
 3. UI is assembled from the Kit (`references/kit-api.md`). Copy `references/topic-template.js`; do not invent a new structure.
 4. Verify objectively with `node scripts/qa.mjs <country>`; the Playwright MCP is for extra text-based inspection only.
 5. Record decisions in `PROGRESS.md`, end with `TASK_DONE`.

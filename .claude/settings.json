@@ -1,7 +1,7 @@
 {
   "permissions": {
     "defaultMode": "bypassPermissions",
-    "allow": ["Bash", "Read", "Edit", "Write", "Glob", "Grep", "mcp__europa", "mcp__playwright"],
+    "allow": ["Bash", "Read", "Edit", "Write", "Glob", "Grep", "mcp__playwright"],
     "deny": [
       "Bash(sudo:*)", "Bash(rm -rf /:*)", "Bash(rm -rf ~:*)", "Bash(git push:*)", "Bash(git reset --hard:*)",
       "Bash(git clean:*)", "Read(./.env)", "Read(~/.ssh/**)", "Read(~/.aws/**)"

@@ -1,0 +1,391 @@
+{
+ "title": "New passenger cars by drive type",
+ "unit": "cars",
+ "units": {
+  "Plug-in hybrid": "cars",
+  "All new passenger cars": "cars",
+  "Diesel (no hybrid)": "cars",
+  "Battery electric": "cars",
+  "Hybrid (non plug-in)": "cars",
+  "Petrol (no hybrid)": "cars"
+ },
+ "source": "Eurostat road_eqr_carpda (Germany)",
+ "source_url": "https://ec.europa.eu/eurostat/databrowser/view/road_eqr_carpda/default/table?lang=en",
+ "licence": "CC BY 4.0, (c) European Union (Eurostat)",
+ "fetched": "2026-11-21",
+ "story": "Battery-electric cars grew from 1.8% of new passenger car registrations in Germany in 2019 to 18.4% in 2023, fell back to 13.5% in 2024 and recovered to 19.1% in 2025 (545,142 cars, +43% on 2024). New diesel (non-hybrid) registrations dropped from 1,336,776 in 2017 to 395,022 in 2025.",
+ "rows": [
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 2952431
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 3036773
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 3206042
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 3285904
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 3441262
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 3435778
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 3607258
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 2917678
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 2622132
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 2651357
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 2844609
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 2817331
+  },
+  {
+   "period": "2025",
+   "geo": "Germany",
+   "series": "All new passenger cars",
+   "value": 2857591
+  },
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 6051
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 8522
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 12363
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 11410
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 25056
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 36062
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 63281
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 194163
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 355961
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 470559
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 524219
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 380609
+  },
+  {
+   "period": "2025",
+   "geo": "Germany",
+   "series": "Battery electric",
+   "value": 545142
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 1986488
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 2142700
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 2136891
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 1361723
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 972588
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 863445
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 978660
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 991948
+  },
+  {
+   "period": "2025",
+   "geo": "Germany",
+   "series": "Petrol (no hybrid)",
+   "value": 777641
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 1336776
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 1111130
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 1152733
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 819896
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 524446
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 472274
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 486581
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 483261
+  },
+  {
+   "period": "2025",
+   "geo": "Germany",
+   "series": "Diesel (no hybrid)",
+   "value": 395022
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 55237
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 98815
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 193901
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 327394
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 429132
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 465225
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 664575
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 755486
+  },
+  {
+   "period": "2025",
+   "geo": "Germany",
+   "series": "Hybrid (non plug-in)",
+   "value": 816099
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 29435
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 31422
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 45246
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 200394
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 325437
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 362092
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 175723
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 191903
+  },
+  {
+   "period": "2025",
+   "geo": "Germany",
+   "series": "Plug-in hybrid",
+   "value": 311392
+  }
+ ]
+}

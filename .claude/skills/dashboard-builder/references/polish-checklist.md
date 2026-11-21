@@ -9,3 +9,6 @@
 8. Keyboard/a11y: tabs are buttons (ok), selects have visible labels, `<html lang>` set, images none. Add `aria-label` to canvases (`canvas.setAttribute('role','img')` + label).
 9. Empty/edge states: selecting a region with null data shows the `.empty` message, not a blank card.
 10. Last: reread the topic file once for dead code, console.log leftovers, and TODO comments; remove them.
+11. Regions-compared bar: exclude the national/EU aggregate row (e.g. Netherlands, EU27, Germany total) from the bars when other regions exist, otherwise the scale is dominated by it; highlight the selected region with a different color.
+12. KPI wording: give each KPI a topic-specific label (e.g. "Average sale price" instead of "Latest"), and unit-aware formatting (EUR with thousands separators, % with one decimal).
+13. Each tab: add one extra chart that tells a different story (stacked bar of shares, or index-vs-price scatter as line) using only data.rows.

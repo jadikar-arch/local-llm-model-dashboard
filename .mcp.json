@@ -1,6 +1,5 @@
 {
   "mcpServers": {
-    "europa": { "type": "stdio", "command": "uvx", "args": ["europa-mcp"], "env": {} },
     "playwright": { "type": "stdio", "command": "npx", "args": ["@playwright/mcp@latest", "--headless", "--browser", "chrome"], "env": {} }
   }
 }

@@ -4,7 +4,7 @@ You are a small local model with a ~64k token window, running headless and alone
 
 ## Hard rules
 1. **Never ask the user anything.** Pick the sensible default, note it in `PROGRESS.md`, continue.
-2. **Never invent data.** Every number must come from a `europa` MCP tool result in this session. If you cannot get real data in 3 tries, end with `TASK_BLOCKED`.
+2. **Never type data numbers.** All data is already fetched, real and validated in `site/data/<country>/<topic>.json` (built from official CBS/Eurostat/Destatis sources by `scripts/build_data_*.py`). Your code reads it with `data.rows`; you never copy, round, invent or mock numbers, and you never edit those JSON files. You have no data tools.
 3. **Small steps, small files.** Max ~150 lines per file. Write one file, check it, then the next. Never paste a whole file back to yourself. Use `Edit` for changes, not rewrites.
 4. **Do not read big things.** Never open `site/shared/vendor/*`, `package-lock.json`, `node_modules`, `logs/*`, or whole data JSON files (use `head -c 600` or `python3 -c` to peek). Read only the files your task type names.
 5. **Stay in your lane.** Touch only files for your task. Do not change `site/shared/kit.js`, `theme.css` or `scripts/*` unless your task says so (SMOKE/QA may fix kit bugs surgically).
@@ -14,6 +14,7 @@ You are a small local model with a ~64k token window, running headless and alone
 9. Finish by appending 3 lines to `PROGRESS.md` and ending your final message with exactly `TASK_DONE` or `TASK_BLOCKED`.
 
 ## Where things are
+- Data files (read-only): `site/data/nl|eu|de/*.json`. Peek with python (`print` keys and 3 rows), never read whole.
 - Task procedure: `.claude/skills/dashboard-builder/references/task-<type>.md` (read it first, it is short)
 - Kit API cheat sheet: `.claude/skills/dashboard-builder/references/kit-api.md`
 - Data JSON contract: `.claude/skills/dashboard-builder/references/data-contract.md`

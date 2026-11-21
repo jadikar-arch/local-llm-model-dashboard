@@ -1,0 +1,597 @@
+{
+ "title": "Electricity generation by source",
+ "unit": "GWh",
+ "units": {
+  "Total generation (GWh)": "GWh",
+  "Wind (GWh)": "GWh",
+  "Solar PV (GWh)": "GWh",
+  "Hydro (GWh)": "GWh",
+  "Bioenergy (GWh)": "GWh",
+  "Lignite (GWh)": "GWh",
+  "Natural gas (GWh)": "GWh",
+  "Nuclear (GWh)": "GWh"
+ },
+ "source": "Eurostat nrg_bal_peh (Germany)",
+ "source_url": "https://ec.europa.eu/eurostat/databrowser/view/nrg_bal_peh/default/table?lang=en",
+ "licence": "CC BY 4.0, (c) European Union (Eurostat)",
+ "fetched": "2026-11-21",
+ "story": "Wind and solar produced 41.7% of Germany's gross electricity in 2024, up from 13.1% in 2013. Nuclear output fell from 97,290 GWh to zero in 2024, lignite halved from 159,055 to 78,504 GWh, and total generation dropped 20% since 2013.",
+ "rows": [
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 638701
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 627806
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 648308
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 650449
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 653723
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 640468
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 606917
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 575462
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 592799.0
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 578948.0
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 522871
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Total generation (GWh)",
+   "value": 514009
+  },
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 52737
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 58497
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 80624
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 79924
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 105693
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 109951
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 125894
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 132102
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 114169
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 124816
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 141764
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Wind (GWh)",
+   "value": 138914
+  },
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 31010
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 36056
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 38726
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 38098
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 39401
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 43459
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 44383
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 49496
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 50472
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 61022
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 64299
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Solar PV (GWh)",
+   "value": 75379
+  },
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 22998
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 19587
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 18976
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 20546
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 20150
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 17693
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 19731
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 18721
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 19657
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 17624
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 21244
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Hydro (GWh)",
+   "value": 23825
+  },
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 45514
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 48288
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 50326
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 50929
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 50916
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 50794
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 50127
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 50931
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 50177.0
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 49572.0
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 52506.0
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Bioenergy (GWh)",
+   "value": 52448.0
+  },
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 159055
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 154205
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 152679
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 147898
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 146918
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 144048
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 112614
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 90724
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 109147
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 115352
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 85796
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Lignite (GWh)",
+   "value": 78504
+  },
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 68737
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 62271
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 63017
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 82294
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 87685
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 83425
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 90753
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 96285
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 97025
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 83601
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 84525
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Natural gas (GWh)",
+   "value": 90487
+  },
+  {
+   "period": "2013",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 97290
+  },
+  {
+   "period": "2014",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 97129
+  },
+  {
+   "period": "2015",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 91786
+  },
+  {
+   "period": "2016",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 84634
+  },
+  {
+   "period": "2017",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 76324
+  },
+  {
+   "period": "2018",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 76005
+  },
+  {
+   "period": "2019",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 75071
+  },
+  {
+   "period": "2020",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 64382
+  },
+  {
+   "period": "2021",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 69130
+  },
+  {
+   "period": "2022",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 34709
+  },
+  {
+   "period": "2023",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 7216
+  },
+  {
+   "period": "2024",
+   "geo": "Germany",
+   "series": "Nuclear (GWh)",
+   "value": 0
+  }
+ ]
+}

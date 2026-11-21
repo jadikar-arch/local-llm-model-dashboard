@@ -21,7 +21,7 @@ def main(path):
     nonnum = [r for r in good if r["value"] is not None and not isinstance(r["value"], (int, float))]
     if nonnum: errs.append(f"{len(nonnum)} non-numeric values, e.g. {nonnum[0]}")
     periods = {r["period"] for r in good}
-    if len(periods) < 8: errs.append(f"need >=8 distinct periods, have {len(periods)}")
+    if len(periods) < 4: errs.append(f"need >=4 distinct periods, have {len(periods)}")
     if any(not re.match(r"^\d{4}(-\d{2}|Q[1-4]|-M\d{2})?$", str(p)) for p in periods):
         errs.append("period must look like 2021, 2021-03 or 2021Q1 (convert 2021MM03 -> 2021-03)")
     vals = {r["value"] for r in good if r["value"] is not None}

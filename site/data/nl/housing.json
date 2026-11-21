@@ -1,121 +1,675 @@
 {
-  "title": "Netherlands Housing Market Data",
-  "source": "CBS (Databank)",
-  "source_url": "https://www.cbs.nl/en-gb",
-  "licence": "CC BY 4.0",
-  "fetched": "2026-11-21T00:00:00Z",
-  "unit": "Index (2015=100) or Euro",
-  "rows": [
-    {"period": "2015", "geo": "NL", "series": "Average Price Index", "value": 100.0},
-    {"period": "2015", "geo": "NL", "series": "Dwelling Stock", "value": 7684900},
-    {"period": "2015", "geo": "NL", "series": "Building Permits", "value": 62000},
-    {"period": "2015", "geo": "Amsterdam", "series": "Average Price Index", "value": 125.3},
-    {"period": "2015", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 678400},
-    {"period": "2015", "geo": "Rotterdam", "series": "Average Price Index", "value": 108.7},
-    {"period": "2015", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 593600},
-    {"period": "2015", "geo": "Utrecht", "series": "Average Price Index", "value": 115.4},
-    {"period": "2015", "geo": "Utrecht", "series": "Dwelling Stock", "value": 362400},
-    {"period": "2015", "geo": "The Hague", "series": "Average Price Index", "value": 112.9},
-    {"period": "2015", "geo": "The Hague", "series": "Dwelling Stock", "value": 348700},
-    {"period": "2016", "geo": "NL", "series": "Average Price Index", "value": 103.2},
-    {"period": "2016", "geo": "NL", "series": "Dwelling Stock", "value": 7724900},
-    {"period": "2016", "geo": "NL", "series": "Building Permits", "value": 65000},
-    {"period": "2016", "geo": "Amsterdam", "series": "Average Price Index", "value": 132.1},
-    {"period": "period": "2016", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 689400},
-    {"period": "2016", "geo": "Rotterdam", "series": "Average Price Index", "value": 113.8},
-    {"period": "2016", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 601700},
-    {"period": "2016", "geo": "Utrecht", "series": "Average Price Index", "value": 119.5},
-    {"period": "2016", "geo": "Utrecht", "series": "Dwelling Stock", "value": 367800},
-    {"period": "2016", "geo": "The Hague", "series": "Average Price Index", "value": 116.4},
-    {"period": "2016", "geo": "The Hague", "series": "Dwelling Stock", "value": 353900},
-    {"period": "2017", "geo": "NL", "series": "Average Price Index", "value": 106.8},
-    {"period": "2017", "geo": "NL", "series": "Dwelling Stock", "value": 7764900},
-    {"period": "2017", "geo": "NL", "series": "Building Permits", "value": 68000},
-    {"period": "2017", "geo": "Amsterdam", "series": "Average Price Index", "value": 139.4},
-    {"period": "2017", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 700400},
-    {"period": "2017", "geo": "Rotterdam", "series": "Average Price Index", "value": 118.2},
-    {"period": "2017", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 609800},
-    {"period": "2017", "geo": "Utrecht", "series": "Average Price Index", "value": 123.1},
-    {"period": "2017", "geo": "Utrecht", "series": "Dwelling Stock", "value": 373200},
-    {"period": "2017", "geo": "The Hague", "series": "Average Price Index", "value": 120.3},
-    {"period": "2017", "geo": "The Hague", "series": "Dwelling Stock", "value": 359100},
-    {"period": "2018", "geo": "NL", "series": "Average Price Index", "value": 110.3},
-    {"period": "2018", "geo": "NL", "series": "Dwelling Stock", "value": 7804900},
-    {"period": "2018", "geo": "NL", "series": "Building Permits", "value": 72000},
-    {"period": "2018", "geo": "Amsterdam", "series": "Average Price Index", "value": 146.7},
-    {"period": "2018", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 711400},
-    {"period": "2018", "geo": "Rotterdam", "series": "Average Price Index", "value": 123.5},
-    {"period": "2018", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 617900},
-    {"period": "2018", "geo": "Utrecht", "series": "Average Price Index", "value": 126.8},
-    {"period": "2018", "geo": "Utrecht", "series": "Dwelling Stock", "value": 378600},
-    {"period": "2018", "geo": "The Hague", "series": "Average Price Index", "value": 124.1},
-    {"period": "2018", "geo": "The Hague", "series": "Dwelling Stock", "value": 364300},
-    {"period": "2019", "geo": "NL", "series": "Average Price Index", "value": 113.5},
-    {"period": "2019", "geo": "NL", "series": "Dwelling Stock", "value": 7844900},
-    {"period": "2019", "geo": "NL", "series": "Building Permits", "value": 75000},
-    {"period": "2019", "geo": "Amsterdam", "series": "Average Price Index", "value": 153.2},
-    {"period": "2019", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 722400},
-    {"period": "2019", "geo": "Rotterdam", "series": "Average Price Index", "value": 127.8},
-    {"period": "2019", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 626000},
-    {"period": "2019", "geo": "Utrecht", "series": "Average Price Index", "value": 130.5},
-    {"period": "2019", "geo": "Utrecht", "series": "Dwelling Stock", "value": 384000},
-    {"period": "2019", "geo": "The Hague", "series": "Average Price Index", "value": 127.9},
-    {"period": "2019", "geo": "The Hague", "series": "Dwelling Stock", "value": 369500},
-    {"period": "2020", "geo": "NL", "series": "Average Price Index", "value": 116.2},
-    {"period": "2020", "geo": "NL", "series": "Dwelling Stock", "value": 7884900},
-    {"period": "2020", "geo": "NL", "series": "Building Permits", "value": 78000},
-    {"period": "2020", "geo": "Amsterdam", "series": "Average Price Index", "value": 161.4},
-    {"period": "2020", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 733400},
-    {"period": "2020", "geo": "Rotterdam", "series": "Average Price Index", "value": 131.9},
-    {"period": "2020", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 634100},
-    {"period": "2020", "geo": "Utrecht", "series": "Average Price Index", "value": 134.2},
-    {"period": "2020", "geo": "Utrecht", "series": "Dwelling Stock", "value": 389400},
-    {"period": "2020", "geo": "The Hague", "series": "Average Price Index", "value": 131.7},
-    {"period": "2020", "geo": "The Hague", "series": "Dwelling Stock", "value": 374700},
-    {"period": "2021", "geo": "NL", "series": "Average Price Index", "value": 119.8},
-    {"period": "2021", "geo": "NL", "series": "Dwelling Stock", "value": 7924900},
-    {"period": "2021", "geo": "NL", "series": "Building Permits", "value": 82000},
-    {"period": "2021", "geo": "Amsterdam", "series": "Average Price Index", "value": 169.7},
-    {"period": "2021", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 744400},
-    {"period": "2021", "geo": "Rotterdam", "series": "Average Price Index", "value": 136.1},
-    {"period": "2021", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 642200},
-    {"period": "2021", "geo": "Utrecht", "series": "Average Price Index", "value": 138.0},
-    {"period": "2021", "geo": "Utrecht", "series": "Dwelling Stock", "value": 394800},
-    {"period": "2021", "geo": "The Hague", "series": "Average Price Index", "value": 135.6},
-    {"period": "2021", "geo": "The Hague", "series": "Dwelling Stock", "value": 379900},
-    {"period": "2022", "geo": "NL", "series": "Average Price Index", "value": 124.3},
-    {"period": "2022", "geo": "NL", "series": "Dwelling Stock", "value": 7964900},
-    {"period": "2022", "geo": "NL", "series": "Building Permits", "value": 85000},
-    {"period": "2022", "geo": "Amsterdam", "series": "Average Price Index", "value": 178.2},
-    {"period": "2022", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 755400},
-    {"period": "2022", "geo": "Rotterdam", "series": "Average Price Index", "value": 140.8},
-    {"period": "2022", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 650300},
-    {"period": "2022", "geo": "Utrecht", "series": "Average Price Index", "value": 142.1},
-    {"period": "2022", "geo": "Utrecht", "series": "Dwelling Stock", "value": 400200},
-    {"period": "2022", "geo": "The Hague", "series": "Average Price Index", "value": 139.5},
-    {"period": "2022", "geo": "The Hague", "series": "Dwelling Stock", "value": 385100},
-    {"period": "2023", "geo": "NL", "series": "Average Price Index", "value": 129.7},
-    {"period": "2023", "geo": "NL", "series": "Dwelling Stock", "value": 8004900},
-    {"period": "2023", "geo": "NL", "series": "Building Permits", "value": 88000},
-    {"period": "2023", "geo": "Amsterdam", "series": "Average Price Index", "value": 186.9},
-    {"period": "2023", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 766400},
-    {"period": "2023", "geo": "Rotterdam", "series": "Average Price Index", "value": 145.3},
-    {"period": "2023", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 658400},
-    {"period": "2023", "geo": "Utrecht", "series": "Average Price Index", "value": 146.4},
-    {"period": "2023", "geo": "Utrecht", "series": "Dwelling Stock", "value": 405600},
-    {"period": "2023", "geo": "The Hague", "series": "Average Price Index", "value": 143.7},
-    {"period": "2023", "geo": "The Hague", "series": "Dwelling Stock", "value": 390300},
-    {"period": "2024", "geo": "NL", "series": "Average Price Index", "value": 133.2},
-    {"period": "2024", "geo": "NL", "series": "Dwelling Stock", "value": 8044900},
-    {"period": "2024", "geo": "NL", "series": "Building Permits", "value": 92000},
-    {"period": "2024", "geo": "Amsterdam", "series": "Average Price Index", "value": 194.3},
-    {"period": "2024", "geo": "Amsterdam", "series": "Dwelling Stock", "value": 777400},
-    {"period": "2024", "geo": "Rotterdam", "series": "Average Price Index", "value": 149.8},
-    {"period": "2024", "geo": "Rotterdam", "series": "Dwelling Stock", "value": 666500},
-    {"period": "2024", "geo": "Utrecht", "series": "Average Price Index", "value": 150.8},
-    {"period": "2024", "geo": "Utrecht", "series": "Dwelling Stock", "value": 411000},
-    {"period": "2024", "geo": "The Hague", "series": "Average Price Index", "value": 147.9},
-    {"period": "2024", "geo": "The Hague", "series": "Dwelling Stock", "value": 395500}
-  ],
-  "story": "The Netherlands housing market has experienced steady growth in average home prices from 2015 to 2024, with Amsterdam showing the highest price increases at 194.3 (index) compared to the national average of 133.2. Housing stock has remained relatively stable with slight increases over the period. Building permits have shown a consistent upward trend, indicating ongoing construction activity. The price gap between major cities like Amsterdam and other regions remains significant, reflecting the strong demand for housing in urban centers."
+ "title": "Existing home prices",
+ "unit": "index 2020=100",
+ "units": {
+  "Price index (2020=100)": "index 2020=100",
+  "Average sale price (EUR)": "EUR"
+ },
+ "source": "CBS StatLine 85792NED",
+ "source_url": "https://opendata.cbs.nl/#/CBS/nl/dataset/85792NED/table",
+ "licence": "CC BY 4.0, (c) Centraal Bureau voor de Statistiek (CBS)",
+ "fetched": "2026-11-21",
+ "story": "Existing-home prices in the Netherlands rose from an average of EUR 230,194 in 2015 to EUR 479,527 in 2025 (+108%). After a dip in 2023 (index 126.6), prices climbed 8.6% in 2025. Utrecht (index 151.1) now leads the four big cities.",
+ "rows": [
+  {
+   "period": "2015",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 69.5
+  },
+  {
+   "period": "2016",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 73.3
+  },
+  {
+   "period": "2017",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 79.3
+  },
+  {
+   "period": "2018",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 86.6
+  },
+  {
+   "period": "2019",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 92.7
+  },
+  {
+   "period": "2020",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 100
+  },
+  {
+   "period": "2021",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 115.1
+  },
+  {
+   "period": "2022",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 130.4
+  },
+  {
+   "period": "2023",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 126.6
+  },
+  {
+   "period": "2024",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 137.7
+  },
+  {
+   "period": "2025",
+   "geo": "Netherlands",
+   "series": "Price index (2020=100)",
+   "value": 149.5
+  },
+  {
+   "period": "2015",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 61.9
+  },
+  {
+   "period": "2016",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 70.2
+  },
+  {
+   "period": "2017",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 80.1
+  },
+  {
+   "period": "2018",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 90.3
+  },
+  {
+   "period": "2019",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 95.5
+  },
+  {
+   "period": "2020",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 100
+  },
+  {
+   "period": "2021",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 111.5
+  },
+  {
+   "period": "2022",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 123.8
+  },
+  {
+   "period": "2023",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 117.6
+  },
+  {
+   "period": "2024",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 127.9
+  },
+  {
+   "period": "2025",
+   "geo": "Amsterdam",
+   "series": "Price index (2020=100)",
+   "value": 132.4
+  },
+  {
+   "period": "2015",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 61.5
+  },
+  {
+   "period": "2016",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 65.9
+  },
+  {
+   "period": "2017",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 74.4
+  },
+  {
+   "period": "2018",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 85.2
+  },
+  {
+   "period": "2019",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 92.2
+  },
+  {
+   "period": "2020",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 100
+  },
+  {
+   "period": "2021",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 114
+  },
+  {
+   "period": "2022",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 128
+  },
+  {
+   "period": "2023",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 124.5
+  },
+  {
+   "period": "2024",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 132.5
+  },
+  {
+   "period": "2025",
+   "geo": "Rotterdam",
+   "series": "Price index (2020=100)",
+   "value": 142.1
+  },
+  {
+   "period": "2015",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 63.7
+  },
+  {
+   "period": "2016",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 68.9
+  },
+  {
+   "period": "2017",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 76.6
+  },
+  {
+   "period": "2018",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 86.2
+  },
+  {
+   "period": "2019",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 93
+  },
+  {
+   "period": "2020",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 100
+  },
+  {
+   "period": "2021",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 114.5
+  },
+  {
+   "period": "2022",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 127.1
+  },
+  {
+   "period": "2023",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 122.4
+  },
+  {
+   "period": "2024",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 131.2
+  },
+  {
+   "period": "2025",
+   "geo": "The Hague",
+   "series": "Price index (2020=100)",
+   "value": 141.4
+  },
+  {
+   "period": "2015",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 61.2
+  },
+  {
+   "period": "2016",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 67.2
+  },
+  {
+   "period": "2017",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 75.3
+  },
+  {
+   "period": "2018",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 83.7
+  },
+  {
+   "period": "2019",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 91.4
+  },
+  {
+   "period": "2020",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 100
+  },
+  {
+   "period": "2021",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 116
+  },
+  {
+   "period": "2022",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 128.8
+  },
+  {
+   "period": "2023",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 119.8
+  },
+  {
+   "period": "2024",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 138.1
+  },
+  {
+   "period": "2025",
+   "geo": "Utrecht",
+   "series": "Price index (2020=100)",
+   "value": 151.1
+  },
+  {
+   "period": "2015",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 230194
+  },
+  {
+   "period": "2016",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 243837
+  },
+  {
+   "period": "2017",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 263295
+  },
+  {
+   "period": "2018",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 287267
+  },
+  {
+   "period": "2019",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 307978
+  },
+  {
+   "period": "2020",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 334488
+  },
+  {
+   "period": "2021",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 386714
+  },
+  {
+   "period": "2022",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 428591
+  },
+  {
+   "period": "2023",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 416153
+  },
+  {
+   "period": "2024",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 450985
+  },
+  {
+   "period": "2025",
+   "geo": "Netherlands",
+   "series": "Average sale price (EUR)",
+   "value": 479527
+  },
+  {
+   "period": "2015",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 303925
+  },
+  {
+   "period": "2016",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 358976
+  },
+  {
+   "period": "2017",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 407670
+  },
+  {
+   "period": "2018",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 460705
+  },
+  {
+   "period": "2019",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 484995
+  },
+  {
+   "period": "2020",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 510919
+  },
+  {
+   "period": "2021",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 569890
+  },
+  {
+   "period": "2022",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 620955
+  },
+  {
+   "period": "2023",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 568161
+  },
+  {
+   "period": "2024",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 617647
+  },
+  {
+   "period": "2025",
+   "geo": "Amsterdam",
+   "series": "Average sale price (EUR)",
+   "value": 630621
+  },
+  {
+   "period": "2015",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 189536
+  },
+  {
+   "period": "2016",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 202501
+  },
+  {
+   "period": "2017",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 227834
+  },
+  {
+   "period": "2018",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 256784
+  },
+  {
+   "period": "2019",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 282910
+  },
+  {
+   "period": "2020",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 307358
+  },
+  {
+   "period": "2021",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 364018
+  },
+  {
+   "period": "2022",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 397864
+  },
+  {
+   "period": "2023",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 383652
+  },
+  {
+   "period": "2024",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 402854
+  },
+  {
+   "period": "2025",
+   "geo": "Rotterdam",
+   "series": "Average sale price (EUR)",
+   "value": 414580
+  },
+  {
+   "period": "2015",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 231302
+  },
+  {
+   "period": "2016",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 244849
+  },
+  {
+   "period": "2017",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 266672
+  },
+  {
+   "period": "2018",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 304889
+  },
+  {
+   "period": "2019",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 324838
+  },
+  {
+   "period": "2020",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 355807
+  },
+  {
+   "period": "2021",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 411718
+  },
+  {
+   "period": "2022",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 454312
+  },
+  {
+   "period": "2023",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 413690
+  },
+  {
+   "period": "2024",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 447418
+  },
+  {
+   "period": "2025",
+   "geo": "The Hague",
+   "series": "Average sale price (EUR)",
+   "value": 465419
+  },
+  {
+   "period": "2015",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 245900
+  },
+  {
+   "period": "2016",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 267618
+  },
+  {
+   "period": "2017",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 307737
+  },
+  {
+   "period": "2018",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 344015
+  },
+  {
+   "period": "2019",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 379770
+  },
+  {
+   "period": "2020",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 405791
+  },
+  {
+   "period": "2021",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 469949
+  },
+  {
+   "period": "2022",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 510981
+  },
+  {
+   "period": "2023",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 474407
+  },
+  {
+   "period": "2024",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 519924
+  },
+  {
+   "period": "2025",
+   "geo": "Utrecht",
+   "series": "Average sale price (EUR)",
+   "value": 549113
+  }
+ ]
 }

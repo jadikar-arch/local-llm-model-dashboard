@@ -10,7 +10,7 @@ Rows are long format `{period, geo, series, value}`.
 | `Kit.latest(rows)` | Last non-null row by period. |
 | `Kit.pct(a, b)` | Percent change from b to a (null-safe). |
 | `Kit.fmt(n, {digits})` | Locale number format. |
-| `Kit.kpi(parent, {label, value, unit, delta, note})` | KPI card; `delta` = percent change number; parent must be `<div class="grid kpis">`. |
+| `Kit.kpi(parent, {label, value, unit, delta, deltaUnit, note})` | KPI card; `delta` = number, `deltaUnit` `"%"` (default) or `" pp"` for rates; parent must be `<div class="grid kpis">`. |
 | `Kit.chartCard(parent, {title, sub, span})` | Card with canvas; returns `{card, canvas}`. `span` 4/6/8/12 (12-column grid; parent `<div class="grid charts">`). |
 | `Kit.chart(canvas, {type, labels, series:[{name,data}], unit, stacked, horizontal, area})` | `type`: line, bar, doughnut, radar. |
 | `Kit.table(parent, {title, columns:[{key,label,fmt}], rows})` | Sortable + searchable. |

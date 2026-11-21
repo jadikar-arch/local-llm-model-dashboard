@@ -10,7 +10,7 @@ PORT="${PORT:-8000}"
 DEADLINE_HOURS="${DEADLINE_HOURS:-9}"      # hard stop
 TASK_TIMEOUT="${TASK_TIMEOUT:-2700}"       # seconds per attempt (45 min)
 MAX_ATTEMPTS="${MAX_ATTEMPTS:-3}"
-MAX_TURNS="${MAX_TURNS:-70}"
+MAX_TURNS="${MAX_TURNS:-45}"
 mkdir -p logs .state qa
 START=$(date +%s); DEADLINE=$((START + DEADLINE_HOURS*3600))
 say() { echo "[$(date +%H:%M:%S)] $*" | tee -a logs/driver.log; }
@@ -27,7 +27,6 @@ export ANTHROPIC_BASE_URL="http://localhost:11434" ANTHROPIC_AUTH_TOKEN="ollama"
 export ANTHROPIC_MODEL="$MODEL" ANTHROPIC_DEFAULT_OPUS_MODEL="$MODEL" ANTHROPIC_DEFAULT_SONNET_MODEL="$MODEL" \
        ANTHROPIC_DEFAULT_HAIKU_MODEL="$MODEL" CLAUDE_CODE_SUBAGENT_MODEL="$MODEL"
 export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1 DISABLE_TELEMETRY=1 DISABLE_AUTOUPDATER=1
-export CLAUDE_CODE_AUTO_COMPACT_WINDOW=60000 CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=70   # model window is ~64k, not 200k
 
 # ---- background helpers ------------------------------------------------------
 caffeinate -dimsu -w $$ >/dev/null 2>&1 &                       # keep the Mac awake
@@ -35,9 +34,6 @@ python3 -m http.server "$PORT" >/dev/null 2>&1 & SERVER=$!
 trap 'kill $SERVER 2>/dev/null; say "driver stopped"' EXIT
 sleep 1
 
-DISALLOWED="mcp__europa__ep_meps mcp__europa__ep_query mcp__europa__ep_votes mcp__europa__agri_data mcp__europa__agri_endpoints \
-mcp__europa__dataeu_dataset mcp__europa__dataeu_facets mcp__europa__dataeu_preview mcp__europa__dataeu_quality \
-mcp__europa__dataeu_search mcp__europa__dataeu_sparql mcp__europa__dataeu_use_cases"   # trims tool-schema tokens
 
 next_task() { grep -m1 -E '^- \[ \] ' tasks.md; }
 field() { echo "$1" | awk -F'|' -v n="$2" '{gsub(/^[ \t]+|[ \t]+$/,"",$n); print $n}'; }
@@ -54,7 +50,7 @@ gate() { # returns 0 if the deliverable passes the objective check for this task
   case "$type" in
     DATA)  python3 scripts/validate_data.py "site/data/$c/$topic.json" ;;
     SHELL) [ -f "site/$c/index.html" ] && [ -f "site/$c/app.js" ] && node --check "site/$c/app.js" && echo OK ;;
-    TOPIC) node --check "site/$c/topics/$topic.js" && echo "syntax OK" ;;
+    TOPIC) node --check "site/$c/topics/$topic.js" && python3 scripts/check_topic.py "site/$c/topics/$topic.js" ;;
     QA|POLISH) node scripts/qa.mjs "$c" "$PORT" ;;
     HOME)  node scripts/qa.mjs home "$PORT" ;;
     SMOKE) node scripts/qa.mjs demo "$PORT" ;;
@@ -81,7 +77,7 @@ $FB
 Steps: 1) Read .claude/skills/dashboard-builder/references/task-$(echo "$TYPE" | tr 'A-Z' 'a-z').md and follow it. 2) Read the last 25 lines of PROGRESS.md for context. 3) Do the work in small steps, verifying each. 4) Append 3 lines to PROGRESS.md (what you did, decisions, gotchas). 5) Your final message must end with the single word TASK_DONE if finished and verified, or TASK_BLOCKED if impossible (explain why in PROGRESS.md)."
   LOG="logs/$ID-attempt$ATT.log"
   claude -p "$PROMPT" --model "$MODEL" --dangerously-skip-permissions --strict-mcp-config --mcp-config .mcp.json \
-         --max-turns "$MAX_TURNS" --disallowedTools $DISALLOWED > "$LOG" 2>&1 &
+         --max-turns "$MAX_TURNS" > "$LOG" 2>&1 &
   CP=$!; ( sleep "$TASK_TIMEOUT"; kill "$CP" 2>/dev/null ) & WD=$!
   wait "$CP"; kill "$WD" 2>/dev/null; pkill -f "@playwright/mcp" 2>/dev/null
 

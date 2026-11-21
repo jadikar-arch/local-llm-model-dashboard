@@ -9,7 +9,7 @@
 
   const fmt = (v, o = {}) => {
     if (v === null || v === undefined || Number.isNaN(v)) return "–";
-    const d = o.digits ?? (Math.abs(v) >= 100 ? 0 : 1);
+    const d = o.digits ?? (Math.abs(v) >= 1000 ? 0 : 1);
     return new Intl.NumberFormat("en-GB", { maximumFractionDigits: d, minimumFractionDigits: o.fixed ? d : 0 }).format(v);
   };
 
@@ -36,11 +36,11 @@
       return s[s.length - 1];
     },
     /** KPI card. delta = number (percent change) or null */
-    kpi(parent, { label, value, unit = "", delta = null, note = "", digits }) {
+    kpi(parent, { label, value, unit = "", delta = null, note = "", digits, deltaUnit = "%" }) {
       let d = "";
       if (delta !== null && delta !== undefined) {
         const cls = Math.abs(delta) < 0.05 ? "flat" : delta > 0 ? "up" : "down";
-        d = `<div class="delta ${cls}">${delta > 0 ? "▲" : delta < 0 ? "▼" : "■"} ${fmt(Math.abs(delta), { digits: 1 })}% ${note}</div>`;
+        d = `<div class="delta ${cls}">${delta > 0 ? "▲" : delta < 0 ? "▼" : "■"} ${fmt(Math.abs(delta), { digits: 1 })}${deltaUnit} ${note}</div>`;
       }
       const el = $(`<div class="card kpi"><div class="label">${label}</div><div class="value">${fmt(value, { digits })}<span class="unit">${unit}</span></div>${d}</div>`);
       parent.appendChild(el); return el;
@@ -71,13 +71,14 @@
           interaction: { mode: "index", intersect: false },
           animation: { duration: 500 },
           plugins: {
-            legend: { display: series.length > 1 || pie, position: "bottom", labels: { usePointStyle: true, boxWidth: 8, color: css("--muted") } },
+            legend: { display: series.length > 1 || pie, position: "bottom", labels: { usePointStyle: true, boxWidth: 8, boxHeight: 8, color: css("--muted") } },
             tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${fmt(c.parsed.y ?? c.parsed.x ?? c.parsed, { digits: 2 })} ${unit}` } },
           },
-          scales: pie ? {} : {
-            x: { stacked, grid: { display: false }, ticks: { color: css("--muted"), maxTicksLimit: 10 } },
-            y: { stacked, grid: { color: css("--border") }, ticks: { color: css("--muted"), callback: (v) => fmt(v) }, title: { display: !!unit, text: unit, color: css("--muted") } },
-          },
+          scales: pie ? {} : (() => {
+            const cat = { stacked, grid: { display: false }, ticks: { color: css("--muted"), maxTicksLimit: horizontal ? 40 : 10, autoSkip: !horizontal } };
+            const val = { stacked, grid: { color: css("--border") }, ticks: { color: css("--muted"), callback: (v) => fmt(v) }, title: { display: !!unit, text: unit, color: css("--muted") } };
+            return horizontal ? { x: val, y: cat } : { x: cat, y: val };
+          })(),
         },
       });
       charts.push(chart); return chart;

@@ -3,7 +3,9 @@
 import { chromium } from "playwright-core";
 import { existsSync, mkdirSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
-import { join } from "node:path";
+import { join, extname, normalize } from "node:path";
+import { createServer } from "node:http";
+import { readFile } from "node:fs/promises";
 
 const target = process.argv[2] || "nl";
 const port = process.argv[3] || "8000";
@@ -23,6 +25,15 @@ function findChromium() {
 }
 
 mkdirSync("qa", { recursive: true });
+// Use the running dev server if there is one, otherwise serve the repo ourselves for this QA run only.
+let ownServer = null;
+try { await fetch(`http://localhost:${port}/site/index.html`); } catch {
+  const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json" };
+  ownServer = createServer(async (req, res) => {
+    try { const f = normalize(decodeURIComponent(req.url.split("?")[0])).replace(/^(\.\.[/\\])+/, ""); const b = await readFile(join(process.cwd(), f)); res.writeHead(200, { "content-type": types[extname(f)] || "application/octet-stream" }); res.end(b); }
+    catch { res.writeHead(404); res.end("not found"); }
+  }).listen(Number(port));
+}
 const results = []; const ok = (name, pass, detail = "") => results.push({ name, pass, detail });
 const browser = await chromium.launch({ executablePath: findChromium(), headless: true });
 
@@ -88,6 +99,7 @@ for (const width of [1440, 390]) {
   await page.close();
 }
 await browser.close();
+if (ownServer) ownServer.close();
 
 const bad = results.filter((r) => !r.pass);
 for (const r of results) if (!r.pass) console.log(`FAIL  ${r.name}${r.detail ? "  -> " + r.detail : ""}`);

@@ -1,5 +1,10 @@
 # Overnight plan: qwen3-coder:30b builds 3 interactive Europa dashboards, unattended
 
+> **v2 (after run 1 failed):** the local model could not reach the europa MCP and invented data. Now Claude fetched all 9 datasets
+> (CBS, Eurostat, Destatis) and built validated JSON with `scripts/build_data_{nl,eu,de}.py`; the local model only builds the UI
+> and has no data tools. DATA tasks are removed from the queue; TOPIC tasks are gated by `scripts/check_topic.py` (no typed-in numbers).
+> The shared template was verified with real NL data (qa 68/68). Sections below that mention DATA tasks are historical.
+
 ## 1. Design decisions (why it is built this way)
 | Problem with a 30B local model | What the plan does |
 |---|---|
