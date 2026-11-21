@@ -23,10 +23,10 @@ Topics.prices = function ({ el, data, Kit }) {
     const avg = mine.reduce((s, r) => s + r.value, 0) / mine.length;
 
     const isRate = /%/.test(unit);   // rates change in percentage points, everything else in percent
-    Kit.kpi(kpis, { label: `Latest (${last.period})`, value: last.value, unit, delta: prev ? (isRate ? last.value - prev.value : Kit.pct(last.value, prev.value)) : null, deltaUnit: isRate ? " pp" : "%", note: "vs previous period" });
-    Kit.kpi(kpis, { label: "Peak", value: peak.value, unit, note: peak.period });
-    Kit.kpi(kpis, { label: "Average", value: avg, unit });
-    Kit.kpi(kpis, { label: "Periods", value: mine.length, unit: `${mine[0].period} to ${last.period}`, digits: 0 });
+    Kit.kpi(kpis, { label: "Latest inflation rate", value: last.value, unit, delta: prev ? (isRate ? last.value - prev.value : Kit.pct(last.value, prev.value)) : null, deltaUnit: isRate ? " pp" : "%", note: "vs previous period" });
+    Kit.kpi(kpis, { label: "Peak inflation rate", value: peak.value, unit, note: peak.period });
+    Kit.kpi(kpis, { label: "Average inflation rate", value: avg, unit });
+    Kit.kpi(kpis, { label: "Periods covered", value: mine.length, unit: `${mine[0].period} to ${last.period}`, digits: 0 });
 
     // Chart 1 (trend). Many regions -> selected region plus the 5 highest. One region -> all measures that share this unit.
     let c = Kit.chartCard(charts, { title: `${series}: trend`, sub: `${unit}, ${mine[0].period} to ${last.period}`, span: 8 });
