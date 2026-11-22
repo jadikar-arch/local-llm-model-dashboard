@@ -17,7 +17,7 @@
 
 # ---------------- EUROPEAN UNION (Eurostat tools: eurostat_*) ----------------
 - [x] EU-D1 | DATA | eu | ai | EU enterprises using artificial intelligence (Eurostat isoc_eb_ai or similar, use find_data "artificial intelligence enterprises"). Compare 8-12 member states incl. NL and DE plus EU27 average, by year.
-- [ ] EU-D2 | DATA | eu | renewables | EU renewable energy share in gross final consumption (nrg_ind_ren or similar), yearly, 8-12 member states incl. NL and DE plus EU27.
+- [x] EU-D2 | DATA | eu | renewables | EU renewable energy share in gross final consumption (nrg_ind_ren or similar), yearly, 8-12 member states incl. NL and DE plus EU27.
 - [ ] EU-D3 | DATA | eu | inflation | EU HICP inflation annual rate (prc_hicp_manr or similar), monthly 2019 to latest, 8-12 member states incl. NL and DE plus euro area, headline plus maybe energy and food.
 - [ ] EU-S1 | SHELL | eu | - | Create site/eu/index.html and site/eu/app.js with Kit.mount for topics ai, renewables, inflation (stubs first).
 - [ ] EU-V1 | TOPIC | eu | ai | Write site/eu/topics/ai.js and register it. Country-compare bar plus time line, country filter.
