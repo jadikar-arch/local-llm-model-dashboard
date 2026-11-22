@@ -6,5 +6,28 @@
   "licence": "CC BY 4.0, © Netherlands (CBS)",
   "fetched": "2026-11-23",
   "story": "Housing data for Netherlands.",
-  "rows": []
+  "rows": [
+    {"period": "2026 3e kwartaal", "geo": "Nederland", "series": "Prijsindex verkoopprijzen", "value": 156.4},
+    {"period": "2026 3e kwartaal", "geo": "Nederland", "series": "Gemiddelde verkoopprijs", "value": 502982},
+    {"period": "2026 3e kwartaal", "geo": "Gelderland (PV)", "series": "Prijsindex verkoopprijzen", "value": 166.2},
+    {"period": "2026 3e kwartaal", "geo": "Gelderland (PV)", "series": "Gemiddelde verkoopprijs", "value": 510080},
+    {"period": "2026 3e kwartaal", "geo": "Zuid-Holland (PV)", "series": "Prijsindex verkoopprijzen", "value": 154.5},
+    {"period": "2026 3e kwartaal", "geo": "Zuid-Holland (PV)", "series": "Gemiddelde verkoopprijs", "value": 495780},
+    {"period": "2026 3e kwartaal", "geo": "Amsterdam", "series": "Prijsindex verkoopprijzen", "value": 135.4},
+    {"period": "2026 3e kwartaal", "geo": "Amsterdam", "series": "Gemiddelde verkoopprijs", "value": 649427},
+    {"period": "2026 3e kwartaal", "geo": "'s-Gravenhage (gemeente)", "series": "Prijsindex verkoopprijzen", "value": 148.7},
+    {"period": "2026 3e kwartaal", "geo": "'s-Gravenhage (gemeente)", "series": "Gemiddelde verkoopprijs", "value": 496537},
+    {"period": "2026 3e kwartaal", "geo": "Rotterdam", "series": "Prijsindex verkoopprijzen", "value": 147.5},
+    {"period": "2026 3e kwartaal", "geo": "Rotterdam", "series": "Gemiddelde verkoopprijs", "value": 443134},
+    {"period": "2026 3e kwartaal", "geo": "Utrecht (gemeente)", "series": "Prijsindex verkoopprijzen", "value": 156.4},
+    {"period": "2026 3e kwartaal", "geo": "Utrecht (gemeente)", "series": "Gemiddelde verkoopprijs", "value": 589854},
+    {"period": "2026 2e kwartaal", "geo": "Nederland", "series": "Prijsindex verkoopprijzen", "value": 154.9},
+    {"period": "2026 2e kwartaal", "geo": "Nederland", "series": "Gemiddelde verkoopprijs", "value": 490020},
+    {"period": "2026 2e kwartaal", "geo": "Gelderland (PV)", "series": "Prijsindex verkoopprijzen", "value": 164.4},
+    {"period": "2026 2e kwartaal", "geo": "Gelderland (PV)", "series": "Gemiddelde verkoopprijs", "value": 497512},
+    {"period": "2026 2e kwartaal", "geo": "Zuid-Holland (PV)", "series": "Prijsindex verkoopprijzen", "value": 152.7},
+    {"period": "2026 2e kwartaal", "geo": "Zuid-Holland (PV)", "series": "Gemiddelde verkoopprijs", "value": 484800},
+    {"period": "2026 2e kwartaal", "geo": "Amsterdam", "series": "Prijsindex verkoopprijzen", "value": 133.5},
+    {"period": "2026 2e kwartaal", "geo": "Amsterdam", "series": "Gemiddelde verkoopprijs", "value": 616709}
+  ]
 }
