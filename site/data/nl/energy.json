@@ -1,0 +1,29 @@
+{
+  "title": "Netherlands Energy Transition",
+  "unit": "megawatt(piek)",
+  "source": "CBS StatLine 85004NED, 83989NED",
+  "source_url": "https://opendata.cbs.nl/#/CBS/nl/dataset/85004NED, https://opendata.cbs.nl/#/CBS/nl/dataset/83989NED",
+  "licence": "CC BY 4.0",
+  "units": {
+    "solar_capacity": "megawatt(piek)",
+    "gas_consumption": "PJ",
+    "electricity_consumption": "PJ"
+  },
+  "fetched": "2026-11-22",
+  "story": "The Netherlands has seen significant growth in solar PV capacity, increasing from 4,609 MW in 2010 to 29,185 MW by 2025, representing a more than 5-fold increase. Gas consumption has shown a general downward trend from 571.1 PJ in 2010 to 428.9 PJ in 2025, while electricity consumption has remained relatively stable around 380 PJ.",
+  "rows": [
+    {"period": "2010", "geo": "NL", "series": "Solar PV capacity", "value": 4609},
+    {"period": "2018", "geo": "NL", "series": "Solar PV capacity", "value": 19536},
+    {"period": "2019", "geo": "NL", "series": "Solar PV capacity", "value": 24712},
+    {"period": "2020", "geo": "NL", "series": "Solar PV capacity", "value": 27838},
+    {"period": "2021", "geo": "NL", "series": "Solar PV capacity", "value": 29185},
+    {"period": "2010", "geo": "NL", "series": "Gas consumption", "value": 571.1},
+    {"period": "2018", "geo": "NL", "series": "Gas consumption", "value": 488},
+    {"period": "2019", "geo": "NL", "series": "Gas consumption", "value": 450.5},
+    {"period": "2021", "geo": "NL", "series": "Gas consumption", "value": 621.4},
+    {"period": "2010", "geo": "NL", "series": "Electricity consumption", "value": 383},
+    {"period": "2018", "geo": "NL", "series": "Electricity consumption", "value": 372},
+    {"period": "2019", "geo": "NL", "series": "Electricity consumption", "value": 365},
+    {"period": "2021", "geo": "NL", "series": "Electricity consumption", "value": 386}
+  ]
+}

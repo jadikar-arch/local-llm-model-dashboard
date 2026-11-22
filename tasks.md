@@ -5,7 +5,7 @@
 
 
 # ---------------- NETHERLANDS (CBS tools: cbs_*) ----------------
-- [ ] NL-D1 | DATA | nl | housing | Netherlands housing crisis. Prefer: existing-home sale prices index / average price, plus dwelling stock or building permits. Use cbs_search for "koopwoningen" or "woningvoorraad". Monthly or yearly, 2015 to latest, national plus 2-5 provinces or the 4 big cities if available.
+- [!] NL-D1 | DATA | nl | housing | Netherlands housing crisis. Prefer: existing-home sale prices index / average price, plus dwelling stock or building permits. Use cbs_search for "koopwoningen" or "woningvoorraad". Monthly or yearly, 2015 to latest, national plus 2-5 provinces or the 4 big cities if available.
 - [ ] NL-D2 | DATA | nl | energy | Netherlands energy transition. Prefer: solar PV capacity or renewable electricity share, plus gas or electricity consumption. Use cbs_search for "zonnestroom" or "hernieuwbare energie". Yearly 2010 to latest.
 - [ ] NL-D3 | DATA | nl | prices | Netherlands cost of living. Prefer: consumer price index inflation (CPI) with a few categories (food, energy, housing). cbs_search "consumentenprijzen". Monthly 2019 to latest.
 - [ ] NL-S1 | SHELL | nl | - | Create site/nl/index.html and site/nl/app.js that call Kit.mount with the 3 topics (housing, energy, prices) using stub render functions that print the topic title. Page must load in qa without console errors.
