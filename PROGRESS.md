@@ -6,4 +6,4 @@ NL-D1 | DATA | nl | housing | Netherlands housing crisis. Used CBS dataset 85792
 
 NL-D2 | DATA | nl | energy | Netherlands energy transition. Used Eurostat dataset nrg_ind_ured to fetch renewable electricity production data for years 2010-2024, including total consumption data. Data includes 20 rows with 2 series (renewable production and total consumption) across 10 periods and 1 geography (Netherlands). All values exactly match tool results with 100% provenance.
 
-NL-S1 | SHELL | nl | - | Created site/nl/index.html and site/nl/app.js with stub render functions for housing, energy, and prices topics. Page loads without console errors. Topic placeholder files created to prevent 404s.
+NL-S1 | SHELL | nl | - | Created site/nl/index.html and site/nl/app.js that call Kit.mount with the 3 topics (housing, energy, prices) using stub render functions that print the topic title. Page loads in qa without console errors. Topic placeholder files created to prevent 404s.
