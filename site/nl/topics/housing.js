@@ -1,166 +1,87 @@
 // Housing topic for Netherlands dashboard
-Topics.housing = ({ el, data, Kit }) => {
-  // Clear the element
-  el.innerHTML = '';
+window.Topics = window.Topics || {};
+Topics.housing = function ({ el, data, Kit }) {
+  const rows = data.rows;
+  const geos = Kit.uniq(rows, "geo");
+  const seriesList = [...new Set(rows.map((r) => r.series))];           // keep file order
+  const unitOf = (s) => (data.units && data.units[s]) || data.unit;
+  let geo = geos[0];
+  let series = seriesList[0];
 
-  // Get unique geographies for filtering
-  const geos = Kit.uniq(data.rows, "geo");
+  const filters = Kit.$('<div class="filters"></div>');
+  const kpis = Kit.$('<div class="grid kpis"></div>');
+  const charts = Kit.$('<div class="grid charts"></div>');
+  el.append(filters, Kit.$(`<div class="insight">${data.story}</div>`), kpis, charts);
 
-  // State for filtering
-  let selectedGeo = geos[0] || "Nederland";
-
-  // Function to redraw everything
   function draw() {
-    Kit.destroyAll();
-    el.innerHTML = '';
+    Kit.destroyAll(); kpis.innerHTML = ""; charts.innerHTML = "";
+    const unit = unitOf(series);
+    const mine = rows.filter((r) => r.geo === geo && r.series === series && r.value != null).sort((a, b) => (a.period < b.period ? -1 : 1));
+    if (!mine.length) { charts.innerHTML = '<div class="empty">No data for this selection. Try another region or measure.</div>'; return; }
+    const last = mine[mine.length - 1], prev = mine[mine.length - 2];
+    const peak = mine.reduce((m, r) => (r.value > m.value ? r : m), mine[0]);
+    const avg = mine.reduce((s, r) => s + r.value, 0) / mine.length;
 
-    // Filter data by selected geography
-    const filteredRows = data.rows.filter(r => r.geo === selectedGeo);
+    const isRate = /%/.test(unit);   // rates change in percentage points, everything else in percent
+    Kit.kpi(kpis, { label: `Latest (${last.period})`, value: last.value, unit, delta: prev ? (isRate ? last.value - prev.value : Kit.pct(last.value, prev.value)) : null, deltaUnit: isRate ? " pp" : "%", note: "vs previous period" });
+    Kit.kpi(kpis, { label: "Peak", value: peak.value, unit, note: peak.period });
+    Kit.kpi(kpis, { label: "Average", value: avg, unit });
+    Kit.kpi(kpis, { label: "Periods", value: mine.length, unit: `${mine[0].period} to ${last.period}`, digits: 0 });
 
-    // Create header with filter
-    const header = document.createElement('div');
-    header.className = 'grid charts';
-    el.appendChild(header);
-
-    // Add region filter (only if we have multiple geographies)
+    // Chart 1 (trend). Many regions -> selected region plus the 5 highest. One region -> all measures that share this unit.
+    let c = Kit.chartCard(charts, { title: `${series}: trend`, sub: `Value, ${mine[0].period} to ${last.period}`, span: 8 });
     if (geos.length > 1) {
-      const filters = document.createElement('div');
-      filters.className = 'filters';
-      header.appendChild(filters);
-
-      Kit.select(filters, {
-        label: "Region:",
-        options: geos.map(g => ({ value: g, label: g })),
-        value: selectedGeo,
-        onChange: (value) => {
-          selectedGeo = value;
-          draw();
-        }
-      });
+      const latestBy = geos.map((g) => ({ g, r: Kit.latest(rows.filter((r) => r.geo === g && r.series === series)) })).filter((x) => x.r);
+      const top = latestBy.sort((a, b) => b.r.value - a.r.value).slice(0, 5).map((x) => x.g);
+      const picks = [...new Set([geo, ...top])];
+      const p = Kit.pivot(rows.filter((r) => r.series === series && picks.includes(r.geo)), "geo");
+      Kit.chart(c.canvas, { type: "line", labels: p.labels, series: p.names.map((n) => ({ name: n, data: p.map[n] })), unit, area: false });
+    } else {
+      const same = seriesList.filter((s) => unitOf(s) === unit).slice(0, 5);
+      const p = Kit.pivot(rows.filter((r) => same.includes(r.series)), "series");
+      Kit.chart(c.canvas, { type: "line", labels: p.labels, series: p.names.map((n) => ({ name: n, data: p.map[n] })), unit, area: p.names.length === 1 });
     }
 
-    // Create KPIs
-    const kpis = document.createElement('div');
-    kpis.className = 'grid kpis';
-    el.appendChild(kpis);
+    // Chart 2 (compare latest values). Many regions -> bar per region. One region -> bar per measure with the same unit.
+    c = Kit.chartCard(charts, { title: geos.length > 1 ? `Regions compared: ${series}` : "Measures compared (latest)", sub: `Latest period, value`, span: 4 });
+    const items = geos.length > 1
+      ? geos.map((g) => ({ n: g, r: Kit.latest(rows.filter((r) => r.geo === g && r.series === series)) }))
+      : seriesList.filter((s) => unitOf(s) === unit).map((s) => ({ n: s, r: Kit.latest(rows.filter((r) => r.series === s)) }));
+    const cmp = items.filter((x) => x.r).sort((a, b) => b.r.value - a.r.value);
+    Kit.chart(c.canvas, { type: "bar", horizontal: true, labels: cmp.map((x) => x.n), series: [{ name: series, data: cmp.map((x) => x.r.value) }], unit });
 
-    // Get latest values for KPIs
-    const latestRows = Kit.latest(filteredRows);
+    // Additional chart: stacked bar showing average prices by region for both measures
+    if (geos.length > 1) {
+      c = Kit.chartCard(charts, { title: "Average prices by region", sub: "Comparing both measures", span: 12 });
+      const priceIndexRows = rows.filter((r) => r.series === 'Prijsindex verkoopprijzen');
+      const avgPriceRows = rows.filter((r) => r.series === 'Gemiddelde verkoopprijs');
 
-    // KPI 1: Average house price (if available)
-    if (latestRows.find(r => r.series === "Gemiddelde verkoopprijs")) {
-      const avgPriceRow = latestRows.find(r => r.series === "Gemiddelde verkoopprijs");
-      Kit.kpi(kpis, {
-        label: "Average House Price",
-        value: Kit.fmt(avgPriceRow.value),
-        unit: "€"
-      });
-    }
+      // Get latest values for each region
+      const latestByGeo = geos.map((g) => {
+        const priceIndex = Kit.latest(priceIndexRows.filter((r) => r.geo === g));
+        const avgPrice = Kit.latest(avgPriceRows.filter((r) => r.geo === g));
+        return { geo: g, priceIndex: priceIndex ? priceIndex.value : null, avgPrice: avgPrice ? avgPrice.value : null };
+      }).filter((x) => x.priceIndex !== null && x.avgPrice !== null);
 
-    // KPI 2: Price Index (if available)
-    if (latestRows.find(r => r.series === "Prijsindex verkoopprijzen")) {
-      const priceIndexRow = latestRows.find(r => r.series === "Prijsindex verkoopprijzen");
-      Kit.kpi(kpis, {
-        label: "House Price Index",
-        value: Kit.fmt(priceIndexRow.value),
-        unit: ""
-      });
-    }
+      // Sort by average price to show top regions
+      latestByGeo.sort((a, b) => b.avgPrice - a.avgPrice);
 
-    // KPI 3: Count of data points (as a third KPI)
-    const totalDataPoints = filteredRows.length;
-    Kit.kpi(kpis, {
-      label: "Data Points",
-      value: Kit.fmt(totalDataPoints),
-      unit: ""
-    });
-
-    // Create charts container
-    const charts = document.createElement('div');
-    charts.className = 'grid charts';
-    el.appendChild(charts);
-
-    // Chart 1: Line chart of house prices over time
-    const priceChartCard = Kit.chartCard(charts, {
-      title: "House Prices Over Time",
-      sub: "Average house prices in " + selectedGeo
-    });
-
-    // Pivot data for charting (filter by price series)
-    const pricePivot = Kit.pivot(filteredRows.filter(r => r.series.includes("verkoopprijs")), "series");
-
-    if (pricePivot.names.length > 0) {
-      Kit.chart(priceChartCard.canvas, {
-        type: "line",
-        labels: pricePivot.labels,
-        series: pricePivot.names.map((name, i) => ({
-          name: name,
-          data: pricePivot.map[name]
-        })),
-        unit: "€"
-      });
-    }
-
-    // Chart 2: Bar chart of price index vs time
-    const indexChartCard = Kit.chartCard(charts, {
-      title: "House Price Index Over Time",
-      sub: "Price index in " + selectedGeo
-    });
-
-    const indexPivot = Kit.pivot(filteredRows.filter(r => r.series.includes("Prijsindex")), "series");
-
-    if (indexPivot.names.length > 0) {
-      Kit.chart(indexChartCard.canvas, {
+      Kit.chart(c.canvas, {
         type: "bar",
-        labels: indexPivot.labels,
-        series: indexPivot.names.map((name, i) => ({
-          name: name,
-          data: indexPivot.map[name]
-        })),
-        unit: ""
+        labels: latestByGeo.map((x) => x.geo),
+        series: [
+          { name: "Price Index", data: latestByGeo.map((x) => x.priceIndex) },
+          { name: "Average Price (EUR)", data: latestByGeo.map((x) => x.avgPrice) }
+        ],
+        unit: "",
+        stacked: true
       });
     }
 
-    // Table
-    const tableContainer = document.createElement('div');
-    tableContainer.className = 'grid charts';
-    el.appendChild(tableContainer);
-
-    // Create a sample table structure
-    const tableTitle = document.createElement('h3');
-    tableTitle.textContent = "Housing Data by Period";
-    tableContainer.appendChild(tableTitle);
-
-    // Table columns based on the actual data
-    const columns = [
-      { key: "period", label: "Period" },
-      { key: "series", label: "Series" },
-      { key: "value", label: "Value" }
-    ];
-
-    // Create table with filtered rows
-    Kit.table(tableContainer, {
-      title: "Housing Data",
-      columns: columns,
-      rows: filteredRows.map(r => ({
-        period: r.period,
-        series: r.series,
-        value: r.value
-      }))
-    });
-
-    // Insight section
-    const insight = document.createElement('div');
-    insight.className = 'insight';
-    el.appendChild(insight);
-
-    Kit.insight(insight, `
-      <p>Housing prices in the Netherlands have shown significant changes over recent years.
-      The data indicates trends in both average prices and price indices that reflect the
-      changing dynamics of the Dutch housing market.</p>
-    `);
+    Kit.table(charts, { title: "Data", columns: [{ key: "period", label: "Period" }, { key: "geo", label: "Region" }, { key: "series", label: "Measure" }, { key: "value", label: "Value", fmt: (v) => Kit.fmt(v, { digits: 2 }) }], rows: rows.filter((r) => r.series === series), span: 12 });
   }
 
-  // Initial draw
+  if (geos.length > 1) Kit.select(filters, { label: "Region", options: geos, value: geo, onChange: (v) => { geo = v; draw(); } });
+  if (seriesList.length > 1) Kit.select(filters, { label: "Measure", options: seriesList, value: series, onChange: (v) => { series = v; draw(); } });
   draw();
 };
