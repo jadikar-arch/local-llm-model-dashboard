@@ -1,0 +1,156 @@
+[
+  {
+    "region": "Nederland",
+    "period": "2026 3e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 156.4
+  },
+  {
+    "region": "Nederland",
+    "period": "2026 3e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 502982
+  },
+  {
+    "region": "Gelderland (PV)",
+    "period": "2026 3e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 166.2
+  },
+  {
+    "region": "Gelderland (PV)",
+    "period": "2026 3e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 510080
+  },
+  {
+    "region": "Zuid-Holland (PV)",
+    "period": "2026 3e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 154.5
+  },
+  {
+    "region": "Zuid-Holland (PV)",
+    "period": "2026 3e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 495780
+  },
+  {
+    "region": "Amsterdam",
+    "period": "2026 3e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 135.4
+  },
+  {
+    "region": "Amsterdam",
+    "period": "2026 3e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 649427
+  },
+  {
+    "region": "'s-Gravenhage (gemeente)",
+    "period": "2026 3e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 148.7
+  },
+  {
+    "region": "'s-Gravenhage (gemeente)",
+    "period": "2026 3e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 496537
+  },
+  {
+    "region": "Rotterdam",
+    "period": "2026 3e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 147.5
+  },
+  {
+    "region": "Rotterdam",
+    "period": "2026 3e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 443134
+  },
+  {
+    "region": "Utrecht (gemeente)",
+    "period": "2026 3e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 156.4
+  },
+  {
+    "region": "Utrecht (gemeente)",
+    "period": "2026 3e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 589854
+  },
+  {
+    "region": "Nederland",
+    "period": "2026 2e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 154.9
+  },
+  {
+    "region": "Nederland",
+    "period": "2026 2e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 490020
+  },
+  {
+    "region": "Gelderland (PV)",
+    "period": "2026 2e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 164.4
+  },
+  {
+    "region": "Gelderland (PV)",
+    "period": "2026 2e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 497512
+  },
+  {
+    "region": "Zuid-Holland (PV)",
+    "period": "2026 2e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 152.7
+  },
+  {
+    "region": "Zuid-Holland (PV)",
+    "period": "2026 2e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 484800
+  },
+  {
+    "region": "Amsterdam",
+    "period": "2026 2e kwartaal",
+    "measure": "Prijsindex verkoopprijzen",
+    "unit": "2020=100",
+    "value": 133.5
+  },
+  {
+    "region": "Amsterdam",
+    "period": "2026 2e kwartaal",
+    "measure": "Gemiddelde verkoopprijs",
+    "unit": "euro",
+    "value": 616709
+  }
+]
