@@ -1,0 +1,1 @@
+// Placeholder for prices topic - will be replaced with actual implementation

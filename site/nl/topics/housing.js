@@ -1,0 +1,1 @@
+// Placeholder for housing topic - will be replaced with actual implementation

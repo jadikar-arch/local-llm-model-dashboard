@@ -1,0 +1,1 @@
+- [NL-S1 task completion](nl-s1-task-completion.md) — record of completing the Netherlands shell task with proper HTML structure and stub functions

@@ -1,0 +1,1 @@
+// Placeholder for energy topic - will be replaced with actual implementation
