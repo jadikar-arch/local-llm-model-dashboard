@@ -1,0 +1,137 @@
+{
+  "title": "EU enterprises using artificial intelligence",
+  "unit": "PC_ENT_AI_TANY",
+  "source": "Eurostat isoc_eb_ai",
+  "source_url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_eb_ai/default/table?lang=en",
+  "licence": "CC BY 4.0, © European Union (Eurostat)",
+  "fetched": "2026-11-22",
+  "story": "In 2025, the EU average showed that 19.95% of enterprises were using at least one AI technology, with Germany at 25.97% and Netherlands at 33.21%. The Netherlands had the highest percentage among the countries studied, showing strong adoption of AI technologies in enterprises.",
+  "rows": [
+    {
+      "period": "2019",
+      "geo": "EU27_2020",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2020",
+      "geo": "EU27_2020",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2021",
+      "geo": "EU27_2020",
+      "series": "Enterprises using at least one AI technology",
+      "value": 7.65
+    },
+    {
+      "period": "2022",
+      "geo": "EU27_2020",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2023",
+      "geo": "EU27_2020",
+      "series": "Enterprises using at least one AI technology",
+      "value": 8.06
+    },
+    {
+      "period": "2024",
+      "geo": "EU27_2020",
+      "series": "Enterprises using at least one AI technology",
+      "value": 13.48
+    },
+    {
+      "period": "2025",
+      "geo": "EU27_2020",
+      "series": "Enterprises using at least one AI technology",
+      "value": 19.95
+    },
+    {
+      "period": "2019",
+      "geo": "NL",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2020",
+      "geo": "NL",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2021",
+      "geo": "NL",
+      "series": "Enterprises using at least one AI technology",
+      "value": 13.1
+    },
+    {
+      "period": "2022",
+      "geo": "NL",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2023",
+      "geo": "NL",
+      "series": "Enterprises using at least one AI technology",
+      "value": 14.1
+    },
+    {
+      "period": "2024",
+      "geo": "NL",
+      "series": "Enterprises using at least one AI technology",
+      "value": 23.06
+    },
+    {
+      "period": "2025",
+      "geo": "NL",
+      "series": "Enterprises using at least one AI technology",
+      "value": 33.21
+    },
+    {
+      "period": "2019",
+      "geo": "DE",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2020",
+      "geo": "DE",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2021",
+      "geo": "DE",
+      "series": "Enterprises using at least one AI technology",
+      "value": 10.56
+    },
+    {
+      "period": "2022",
+      "geo": "DE",
+      "series": "Enterprises using at least one AI technology",
+      "value": null
+    },
+    {
+      "period": "2023",
+      "geo": "DE",
+      "series": "Enterprises using at least one AI technology",
+      "value": 11.55
+    },
+    {
+      "period": "2024",
+      "geo": "DE",
+      "series": "Enterprises using at least one AI technology",
+      "value": 19.75
+    },
+    {
+      "period": "2025",
+      "geo": "DE",
+      "series": "Enterprises using at least one AI technology",
+      "value": 25.97
+    }
+  ]
+}
