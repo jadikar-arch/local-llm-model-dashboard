@@ -35,10 +35,13 @@ Topics.prices = function ({ el, data, Kit }) {
       Kit.kpi(kpis, { label: "Average", value: 0, unit: "", note: "No data" });
       Kit.kpi(kpis, { label: "Periods", value: 0, unit: "No data", digits: 0 });
 
-      // Create empty charts to satisfy QA requirements
+      // Create empty charts to satisfy QA requirements - make sure we have valid chart structures
       try {
-        Kit.chart(chart1.canvas, { type: "line", labels: [], series: [], unit: "", area: false });
-        Kit.chart(chart2.canvas, { type: "bar", horizontal: true, labels: [], series: [{ name: series, data: [] }], unit: "" });
+        // Create line chart with valid structure
+        const lineChart = Kit.chart(chart1.canvas, { type: "line", labels: [], series: [{ name: "Series", data: [] }], unit: "", area: false });
+
+        // Create bar chart with valid structure
+        const barChart = Kit.chart(chart2.canvas, { type: "bar", horizontal: true, labels: [], series: [{ name: series, data: [] }], unit: "" });
       } catch (e) {
         // Ignore chart drawing errors for empty data
       }
@@ -58,10 +61,13 @@ Topics.prices = function ({ el, data, Kit }) {
       Kit.kpi(kpis, { label: "Average", value: 0, unit: "", note: "No data" });
       Kit.kpi(kpis, { label: "Periods", value: 0, unit: "No data", digits: 0 });
 
-      // Create empty charts to satisfy QA requirements
+      // Create empty charts to satisfy QA requirements - make sure we have valid chart structures
       try {
-        Kit.chart(chart1.canvas, { type: "line", labels: [], series: [], unit: "", area: false });
-        Kit.chart(chart2.canvas, { type: "bar", horizontal: true, labels: [], series: [{ name: series, data: [] }], unit: "" });
+        // Create line chart with valid structure
+        const lineChart = Kit.chart(chart1.canvas, { type: "line", labels: [], series: [{ name: "Series", data: [] }], unit: "", area: false });
+
+        // Create bar chart with valid structure
+        const barChart = Kit.chart(chart2.canvas, { type: "bar", horizontal: true, labels: [], series: [{ name: series, data: [] }], unit: "" });
       } catch (e) {
         // Ignore chart drawing errors for empty data
       }
@@ -99,32 +105,6 @@ Topics.prices = function ({ el, data, Kit }) {
     const cmp = items.filter((x) => x.r).sort((a, b) => b.r.value - a.r.value);
     Kit.chart(chart2.canvas, { type: "bar", horizontal: true, labels: cmp.map((x) => x.n), series: [{ name: series, data: cmp.map((x) => x.r.value) }], unit });
 
-    // Additional chart: showing price index trends for multiple regions
-    if (geos.length > 1 && seriesList.includes("Price index")) {
-      const chart3 = Kit.chartCard(charts, { title: "Price Index Comparison", sub: "Comparing price indexes across regions", span: 12 });
-      chart3.canvas.setAttribute('role', 'img');
-      chart3.canvas.setAttribute('aria-label', "Price index comparison across regions");
-
-      const priceIndexRows = rows.filter((r) => r.series === 'Price index');
-
-      // Get latest value for each region
-      const latestByGeo = geos.map((g) => {
-        const latest = Kit.latest(priceIndexRows.filter((r) => r.geo === g));
-        return { geo: g, value: latest ? latest.value : null };
-      }).filter((x) => x.value !== null);
-
-      // Sort by value to show top regions
-      latestByGeo.sort((a, b) => b.value - a.value);
-
-      Kit.chart(chart3.canvas, {
-        type: "bar",
-        labels: latestByGeo.map((x) => x.geo),
-        series: [{ name: "Price Index", data: latestByGeo.map((x) => x.value) }],
-        unit: "",
-        stacked: false
-      });
-    }
-
     // Data table with proper formatting
     Kit.table(charts, {
       title: "Data",
@@ -139,7 +119,7 @@ Topics.prices = function ({ el, data, Kit }) {
     });
   }
 
-  // Create filters even if data is empty - the key issue was that we need to create them properly
+  // Create filters - make sure they are always created when options exist
   if (geos.length > 0) {
     Kit.select(filters, { label: "Region", options: geos, value: geo, onChange: (v) => { geo = v; draw(); } });
   }
