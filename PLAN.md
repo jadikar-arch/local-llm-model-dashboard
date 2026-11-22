@@ -47,7 +47,8 @@ Every session is recorded as stream-json in `logs/<ID>-attemptN.jsonl`. After a 
 - requires the dataset id in `source` to appear in the results, and at least one real data call.
 Tested: real data passes; fully fabricated, half fabricated, and Bash-echoed numbers all fail.
 Results over the 12k-token cap are saved by Claude Code to a `tool-results/` file; reads of such a file count as provenance only if its path was announced in a europa result (found during run 3; NL-D1 attempts 1-2 were judged on their merits: attempt 1 invented values, attempt 2 wrote to the wrong path).
-Known limits (the gate cannot catch these): wrong dataset for the topic, wrong unit label, values copied correctly but assigned to the wrong period/region, misleading `story` wording. The human review in the morning covers these.
+Period pairing (added during run 3 after NL-D2 attempt 1 attached real CBS values to the wrong years): in long-format tool output every row's value must appear on a line that also shows the row's year.
+Known limits (the gate cannot catch these): wrong dataset for the topic, wrong unit label, values assigned to the wrong region or measure, misleading `story` wording. The human review in the morning covers these.
 
 ## 4. Work breakdown (queue in `tasks.md`, 30 tasks, strict order)
 Per country (NL, EU, DE): `D1 D2 D3` (data, one per topic) -> `S1` (page shell) -> `V1 V2 V3` (topic tabs) -> `Q` (QA fixing) -> `P` (polish). Then `HOME-1` (landing page), `FIN-1` (regression over all pages), `FIN-2` (`RESULTS.md`).

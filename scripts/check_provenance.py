@@ -54,6 +54,21 @@ def main(path, trace):
     need = 0.98 if chance >= 0.5 else THRESH
     if ratio < need:
         errs.append(f"only {ratio:.0%} of the {len(vals)} distinct values appear in the europa tool results (need {need:.0%}, chance level {chance:.0%}). Not found, e.g.: {miss[:8]}. Copy numbers unchanged from the tool output; never invent, estimate, interpolate or compute new values")
+    # period assignment: in long-format tool output ("2018|4609") a row's value must sit on a line that also shows the row's year
+    lines = [l for l in text.split("\n") if re.search(r"\b(19|20)\d{2}\b", l)]
+    lsets = [(l, candidates(l)) for l in lines]
+    def on_line(v, year):
+        d = decimals(v)
+        return any(year in l and (v in c or round(v, d) in {round(x, d) for x in c}) for l, c in lsets)
+    carried = [v for v in vals if any(v in c or round(v, decimals(v)) in {round(x, decimals(v)) for x in c} for _, c in lsets)]
+    if len(carried) >= 0.7 * max(len(vals), 1):          # long format with periods on the same line -> enforce pairing
+        bad = [r for r in d.get("rows", []) if isinstance(r.get("value"), (int, float)) and not on_line(r["value"], str(r["period"])[:4])]
+        if len(bad) > 0.1 * len(d["rows"]):
+            ex = []
+            for r in bad[:4]:
+                yrs = sorted({y for l, c in lsets for y in re.findall(r"\b(?:19|20)\d{2}\b", l) if r["value"] in c})[:3]
+                ex.append(f"{r['period']} -> {r['value']} (the tool results show this value for {', '.join(yrs) or 'no year'})")
+            errs.append(f"{len(bad)} of {len(d['rows'])} rows put a value under the wrong period, e.g. " + "; ".join(ex) + ". Copy each value together with ITS OWN period from the tool output; if the data starts later than the brief says, use the periods that exist")
     ids = [t for t in re.findall(r"[A-Za-z0-9_\-]{5,}", str(d.get("source", ""))) if re.search(r"\d|_", t)]
     if ids and not any(i.lower() in text.lower() for i in ids):
         errs.append(f"dataset id from 'source' ({ids}) never appears in the tool results: use the id the tool returned")
