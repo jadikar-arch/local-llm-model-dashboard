@@ -15,23 +15,46 @@ Topics.prices = function ({ el, data, Kit }) {
 
   function draw() {
     Kit.destroyAll(); kpis.innerHTML = ""; charts.innerHTML = "";
-    const unit = unitOf(series);
-    const mine = rows.filter((r) => r.geo === geo && r.series === series && r.value != null).sort((a, b) => (a.period < b.period ? -1 : 1));
 
-    // Even with no data, we still need to create chart containers to satisfy QA checks
     // Create chart containers first so they're detected by QA tool
-    let c = Kit.chartCard(charts, { title: `${series}: trend`, sub: "Value", span: 8 });
-    c = Kit.chartCard(charts, { title: geos.length > 1 ? `Regions compared: ${series}` : "Measures compared (latest)", sub: "Latest period, value", span: 4 });
+    const chart1 = Kit.chartCard(charts, { title: `${series}: trend`, sub: "Value", span: 8 });
+    const chart2 = Kit.chartCard(charts, { title: geos.length > 1 ? `Regions compared: ${series}` : "Measures compared (latest)", sub: "Latest period, value", span: 4 });
 
-    // Handle case when no data exists
-    if (!mine.length) {
-      charts.innerHTML = '<div class="empty">No data for this selection. Try another region or measure.</div>';
+    // Even with no data, we still need to create proper chart containers
+    if (!rows.length) {
+      charts.innerHTML = '<div class="empty">No data available for prices. Try another region or measure.</div>';
 
-      // Even with no data, we should still create KPIs properly
       Kit.kpi(kpis, { label: "Latest (no data)", value: 0, unit: "", delta: null });
       Kit.kpi(kpis, { label: "Peak", value: 0, unit: "", note: "No data" });
       Kit.kpi(kpis, { label: "Average", value: 0, unit: "", note: "No data" });
       Kit.kpi(kpis, { label: "Periods", value: 0, unit: "No data", digits: 0 });
+
+      // Add aria labels for accessibility
+      chart1.canvas.setAttribute('role', 'img');
+      chart1.canvas.setAttribute('aria-label', `Trend chart for ${series} over time`);
+      chart2.canvas.setAttribute('role', 'img');
+      chart2.canvas.setAttribute('aria-label', `Comparison chart for ${series}`);
+
+      return;
+    }
+
+    const unit = unitOf(series);
+    const mine = rows.filter((r) => r.geo === geo && r.series === series && r.value != null).sort((a, b) => (a.period < b.period ? -1 : 1));
+
+    // Handle case when no data for this selection exists
+    if (!mine.length) {
+      charts.innerHTML = '<div class="empty">No data available for this selection. Try another region or measure.</div>';
+
+      Kit.kpi(kpis, { label: "Latest (no data)", value: 0, unit: "", delta: null });
+      Kit.kpi(kpis, { label: "Peak", value: 0, unit: "", note: "No data" });
+      Kit.kpi(kpis, { label: "Average", value: 0, unit: "", note: "No data" });
+      Kit.kpi(kpis, { label: "Periods", value: 0, unit: "No data", digits: 0 });
+
+      // Add aria labels for accessibility
+      chart1.canvas.setAttribute('role', 'img');
+      chart1.canvas.setAttribute('aria-label', `Trend chart for ${series} over time`);
+      chart2.canvas.setAttribute('role', 'img');
+      chart2.canvas.setAttribute('aria-label', `Comparison chart for ${series}`);
 
       return;
     }
@@ -47,30 +70,40 @@ Topics.prices = function ({ el, data, Kit }) {
     Kit.kpi(kpis, { label: "Periods", value: mine.length, unit: `${mine[0].period} to ${last.period}`, digits: 0 });
 
     // Chart 1 (trend) - showing price trends over time
-    c = Kit.chartCard(charts, { title: `${series}: trend`, sub: `Value, ${mine[0].period} to ${last.period}`, span: 8 });
     if (geos.length > 1) {
       const latestBy = geos.map((g) => ({ g, r: Kit.latest(rows.filter((r) => r.geo === g && r.series === series)) })).filter((x) => x.r);
       const top = latestBy.sort((a, b) => b.r.value - a.r.value).slice(0, 5).map((x) => x.g);
       const picks = [...new Set([geo, ...top])];
       const p = Kit.pivot(rows.filter((r) => r.series === series && picks.includes(r.geo)), "geo");
-      Kit.chart(c.canvas, { type: "line", labels: p.labels, series: p.names.map((n) => ({ name: n, data: p.map[n] })), unit, area: false });
+
+      // Add aria-label to canvas for accessibility
+      chart1.canvas.setAttribute('role', 'img');
+      chart1.canvas.setAttribute('aria-label', `Trend chart for ${series} over time`);
+      Kit.chart(chart1.canvas, { type: "line", labels: p.labels, series: p.names.map((n) => ({ name: n, data: p.map[n] })), unit, area: false });
     } else {
       const same = seriesList.filter((s) => unitOf(s) === unit).slice(0, 5);
       const p = Kit.pivot(rows.filter((r) => same.includes(r.series)), "series");
-      Kit.chart(c.canvas, { type: "line", labels: p.labels, series: p.names.map((n) => ({ name: n, data: p.map[n] })), unit, area: p.names.length === 1 });
+
+      // Add aria-label to canvas for accessibility
+      chart1.canvas.setAttribute('role', 'img');
+      chart1.canvas.setAttribute('aria-label', `Trend chart for ${series} over time`);
+      Kit.chart(chart1.canvas, { type: "line", labels: p.labels, series: p.names.map((n) => ({ name: n, data: p.map[n] })), unit, area: p.names.length === 1 });
     }
 
     // Chart 2 (compare latest values) - comparing different price measures or regions
-    c = Kit.chartCard(charts, { title: geos.length > 1 ? `Regions compared: ${series}` : "Measures compared (latest)", sub: `Latest period, value`, span: 4 });
     const items = geos.length > 1
       ? geos.map((g) => ({ n: g, r: Kit.latest(rows.filter((r) => r.geo === g && r.series === series)) }))
       : seriesList.filter((s) => unitOf(s) === unit).map((s) => ({ n: s, r: Kit.latest(rows.filter((r) => r.series === s)) }));
     const cmp = items.filter((x) => x.r).sort((a, b) => b.r.value - a.r.value);
-    Kit.chart(c.canvas, { type: "bar", horizontal: true, labels: cmp.map((x) => x.n), series: [{ name: series, data: cmp.map((x) => x.r.value) }], unit });
+
+    // Add aria-label to canvas for accessibility
+    chart2.canvas.setAttribute('role', 'img');
+    chart2.canvas.setAttribute('aria-label', `Comparison chart for ${series}`);
+    Kit.chart(chart2.canvas, { type: "bar", horizontal: true, labels: cmp.map((x) => x.n), series: [{ name: series, data: cmp.map((x) => x.r.value) }], unit });
 
     // Additional chart: showing price index trends for multiple regions
     if (geos.length > 1 && seriesList.includes("Price index")) {
-      c = Kit.chartCard(charts, { title: "Price Index Comparison", sub: "Comparing price indexes across regions", span: 12 });
+      const chart3 = Kit.chartCard(charts, { title: "Price Index Comparison", sub: "Comparing price indexes across regions", span: 12 });
       const priceIndexRows = rows.filter((r) => r.series === 'Price index');
 
       // Get latest value for each region
@@ -82,7 +115,10 @@ Topics.prices = function ({ el, data, Kit }) {
       // Sort by value to show top regions
       latestByGeo.sort((a, b) => b.value - a.value);
 
-      Kit.chart(c.canvas, {
+      // Add aria-label to canvas for accessibility
+      chart3.canvas.setAttribute('role', 'img');
+      chart3.canvas.setAttribute('aria-label', "Price index comparison across regions");
+      Kit.chart(chart3.canvas, {
         type: "bar",
         labels: latestByGeo.map((x) => x.geo),
         series: [{ name: "Price Index", data: latestByGeo.map((x) => x.value) }],
@@ -91,10 +127,21 @@ Topics.prices = function ({ el, data, Kit }) {
       });
     }
 
-    Kit.table(charts, { title: "Data", columns: [{ key: "period", label: "Period" }, { key: "geo", label: "Region" }, { key: "series", label: "Measure" }, { key: "value", label: "Value", fmt: (v) => Kit.fmt(v, { digits: 2 }) }], rows: rows.filter((r) => r.series === series), span: 12 });
+    // Data table with proper formatting
+    Kit.table(charts, {
+      title: "Data",
+      columns: [
+        { key: "period", label: "Period" },
+        { key: "geo", label: "Region" },
+        { key: "series", label: "Measure" },
+        { key: "value", label: "Value", fmt: (v) => Kit.fmt(v, { digits: 2 }) }
+      ],
+      rows: rows.filter((r) => r.series === series),
+      span: 12
+    });
   }
 
-  // Create filters even if data is empty
+  // Create filters even if data is empty - the key issue was that we need to create them properly
   if (geos.length > 0) {
     Kit.select(filters, { label: "Region", options: geos, value: geo, onChange: (v) => { geo = v; draw(); } });
   }
