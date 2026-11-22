@@ -1,0 +1,10 @@
+{
+  "title": "Netherlands Prices",
+  "unit": "",
+  "source": "CBS",
+  "source_url": "https://www.cbs.nl",
+  "licence": "CC BY 4.0, © Netherlands (CBS)",
+  "fetched": "2026-11-23",
+  "story": "Price data for Netherlands.",
+  "rows": []
+}

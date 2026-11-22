@@ -1,6 +1,6 @@
 // TEMPLATE for site/<country>/app.js. Stub renders are replaced by Topics.<id> as topic files get written.
 const stub = (title) => ({ el }) => { el.innerHTML = `<div class="empty">${title}: coming soon</div>`; };
-const topic = (id, title) => ({ id, title, render: (ctx) => (window.Topics && Topics[id] ? Topics[id](ctx) : stub(title)(ctx)) });
+const topic = (id, title) => ({ id, title, render: (ctx) => (window.Topics && window.Topics[id] ? window.Topics[id](ctx) : stub(title)(ctx)) });
 
 // Define Topics object to prevent reference errors
 if (!window.Topics) {

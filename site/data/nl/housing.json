@@ -1,0 +1,10 @@
+{
+  "title": "Netherlands Housing Market",
+  "unit": "",
+  "source": "CBS",
+  "source_url": "https://www.cbs.nl",
+  "licence": "CC BY 4.0, © Netherlands (CBS)",
+  "fetched": "2026-11-23",
+  "story": "Housing data for Netherlands.",
+  "rows": []
+}
