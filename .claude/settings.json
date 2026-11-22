@@ -22,8 +22,6 @@
       "Bash(git stash:*)",
       "Bash(git checkout:*)",
       "Bash(git restore:*)",
-      "Bash(curl:*)",
-      "Bash(wget:*)",
       "Read(./.env)",
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
