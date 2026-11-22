@@ -45,6 +45,26 @@ def main(path):
             errs.append(f"series '{s}' ({g}) repeats the same value {best} periods in a row: it looks copied forward to add rows. Use only the value the tool returned for each period; to get more rows fetch a longer period, more regions or more measures")
     if not str(d.get("story", "")).strip() or len(str(d.get("story", ""))) < 80:
         errs.append("'story' should be 1-3 sentences (>=80 chars) of plain-language insight written from the real numbers")
+    # citation + story must agree with the rows (the story is the insight text shown on the dashboard)
+    if not any(re.search(r"\d|_", t) for t in re.findall(r"[A-Za-z0-9_\-]{5,}", str(d.get("source", "")))):
+        errs.append("'source' must name the dataset id, e.g. 'CBS StatLine 85792NED' or 'Eurostat nrg_ind_ren'")
+    story = str(d.get("story", ""))
+    ys = [int(str(r["period"])[:4]) for r in good]
+    if ys and story:
+        lo, hi = min(ys), max(ys)
+        bad_years = sorted({int(y) for y in re.findall(r"\b(19\d{2}|20\d{2})\b", story) if not lo <= int(y) <= hi})
+        if bad_years:
+            errs.append(f"story mentions years {bad_years} but the rows only cover {lo}-{hi}: write the story from the rows")
+        allv = [r["value"] for r in good if r["value"] is not None]
+        known = set(allv)
+        for g in groups.values():
+            gv = [x["value"] for x in g if x["value"] is not None][:60]
+            known |= {abs(a - b) for a in gv for b in gv}
+        nums = [float(n.replace(",", "")) for n in re.findall(r"(?<![\d.,])\d{1,3}(?:,\d{3})+(?:\.\d+)?|(?<![\d.,])\d{4,}(?:\.\d+)?", story)]
+        nums = [n for n in nums if not (1900 <= n <= 2100 and n == int(n))]
+        miss = [n for n in nums if not any(abs(n - k) <= 0.006 * max(abs(k), 1) for k in known)]
+        if miss:
+            errs.append(f"story quotes numbers {miss} that are not in the rows (nor a difference of two row values): quote only numbers you read from the rows")
     if errs:
         print("FAIL " + path); [print(" - " + e) for e in errs]; return 1
     print(f"OK {path}: {len(rows)} rows, {len(periods)} periods, {len({r['series'] for r in good})} series, {len({r['geo'] for r in good})} geos")
