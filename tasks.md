@@ -11,7 +11,7 @@
 - [!] NL-S1 | SHELL | nl | - | Create site/nl/index.html and site/nl/app.js that call Kit.mount with the 3 topics (housing, energy, prices) using stub render functions that print the topic title. Page must load in qa without console errors.
 - [x] NL-V1 | TOPIC | nl | housing | Write site/nl/topics/housing.js (render function) and register it in site/nl/app.js. 3+ KPIs, 2+ charts, region filter, table, insight.
 - [x] NL-V2 | TOPIC | nl | energy | Write site/nl/topics/energy.js and register it. Same minimum content.
-- [ ] NL-V3 | TOPIC | nl | prices | Write site/nl/topics/prices.js and register it. Same minimum content.
+- [x] NL-V3 | TOPIC | nl | prices | Write site/nl/topics/prices.js and register it. Same minimum content.
 - [ ] NL-Q | QA | nl | - | Run `node scripts/qa.mjs nl` and fix every FAIL until QA RESULT: PASS. Then use the Playwright MCP (browser_snapshot, browser_console_messages) for one manual pass of each tab.
 - [ ] NL-P | POLISH | nl | - | Raise professional quality of the NL dashboard using references/polish-checklist.md. Keep QA at PASS.
 
