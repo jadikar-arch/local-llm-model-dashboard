@@ -46,6 +46,7 @@ Every session is recorded as stream-json in `logs/<ID>-attemptN.jsonl`. After a 
 - requires >= 90% of the distinct row values to appear in those results (exact or equal after rounding to the digits kept),
 - requires the dataset id in `source` to appear in the results, and at least one real data call.
 Tested: real data passes; fully fabricated, half fabricated, and Bash-echoed numbers all fail.
+Results over the 12k-token cap are saved by Claude Code to a `tool-results/` file; reads of such a file count as provenance only if its path was announced in a europa result (found during run 3; NL-D1 attempts 1-2 were judged on their merits: attempt 1 invented values, attempt 2 wrote to the wrong path).
 Known limits (the gate cannot catch these): wrong dataset for the topic, wrong unit label, values copied correctly but assigned to the wrong period/region, misleading `story` wording. The human review in the morning covers these.
 
 ## 4. Work breakdown (queue in `tasks.md`, 30 tasks, strict order)

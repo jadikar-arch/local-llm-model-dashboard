@@ -38,20 +38,32 @@ def final_text(path):
 
 
 def europa_results(path):
-    """Only results of mcp__europa__* tools count as provenance (never Bash output the model could have typed itself)."""
-    names, ids, chunks = [], {}, []
+    """Provenance text = what mcp__europa__* tools returned (never Bash output the model could have typed itself).
+    Too-large results are saved by Claude Code to a tool-results file and the model reads them back; such reads count too,
+    but ONLY for a file whose exact path was announced in a europa result, and only via Read or a plain cat/head/tail/grep/sed -n."""
+    names, calls, chunks, announced = [], {}, [], ""
+    plain_read = _re.compile(r"^\s*(cat|head|tail|grep|sed\s+-n)\b[^;&|<>`$]*$")
     for e in events(path):
         msg = e.get("message", {})
         if e.get("type") == "assistant":
             for c in msg.get("content", []):
                 if isinstance(c, dict) and c.get("type") == "tool_use":
-                    ids[c["id"]] = c["name"]
+                    calls[c["id"]] = (c["name"], c.get("input", {}))
                     if c["name"].startswith("mcp__europa__"):
                         names.append(c["name"].replace("mcp__europa__", ""))
         elif e.get("type") == "user":
             for c in msg.get("content", []) if isinstance(msg.get("content"), list) else []:
-                if isinstance(c, dict) and c.get("type") == "tool_result" and ids.get(c.get("tool_use_id", ""), "").startswith("mcp__europa__"):
-                    chunks.append(_text(c.get("content")))
+                if not (isinstance(c, dict) and c.get("type") == "tool_result"):
+                    continue
+                name, inp = calls.get(c.get("tool_use_id", ""), ("", {}))
+                text = _text(c.get("content"))
+                if name.startswith("mcp__europa__"):
+                    chunks.append(text); announced += text
+                elif name == "Read" and "/tool-results/" in inp.get("file_path", "") and inp["file_path"] in announced:
+                    chunks.append(text)
+                elif name == "Bash" and "/tool-results/" in inp.get("command", "") and plain_read.match(inp["command"]) \
+                        and any(t in announced for t in inp["command"].split() if "/tool-results/" in t):
+                    chunks.append(text)
     return "\n".join(chunks), names
 
 
