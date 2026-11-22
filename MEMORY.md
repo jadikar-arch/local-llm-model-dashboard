@@ -1,1 +1,2 @@
 - [NL-S1 task completion](nl-s1-task-completion.md) — record of completing the Netherlands shell task with proper HTML structure and stub functions
+- [NL-V2 energy topic completed](nl-v2-energy-topic-completed.md) — NL-V2 task completed - created energy.js topic file for Netherlands dashboard with proper KPIs, charts, filter, table, and insight as required.
