@@ -1,318 +1,326 @@
 {
-  "title": "Netherlands Cost of Living Prices",
-  "description": "Consumer Price Index (CPI) inflation data for the Netherlands including food, energy and housing categories from 2019 onwards.",
   "unit": "2025=100",
-  "source": "CBS StatLine 86141NED",
-  "source_url": "https://opendata.cbs.nl/#/CBS/nl/dataset/86141NED/table",
-  "licence": "CC BY 4.0, © Centraal Bureau voor de Statistiek (CBS)",
-  "fetched": "2026-11-23",
-  "rows": [
+  "series": {
+    "all": {
+      "title": "All expenditures"
+    },
+    "food": {
+      "title": "Food and non-alcoholic beverages"
+    },
+    "energy": {
+      "title": "Energy"
+    },
+    "housing": {
+      "title": "Housing"
+    }
+  },
+  "data": [
     {
       "period": "2024-01",
       "series": {
-        "all": 94.52,
-        "food": 94.61,
-        "energy": 95.22,
+        "all": 94.28,
+        "food": 95.22,
+        "energy": 102.63,
         "housing": 92.59
       }
     },
     {
       "period": "2024-02",
       "series": {
-        "all": 95.14,
-        "food": 94.98,
-        "energy": 95.63,
+        "all": 95.17,
+        "food": 95.63,
+        "energy": 103.65,
         "housing": 92.59
       }
     },
     {
       "period": "2024-03",
       "series": {
-        "all": 95.61,
-        "food": 95.42,
-        "energy": 95.99,
+        "all": 95.76,
+        "food": 95.99,
+        "energy": 103.73,
         "housing": 92.59
       }
     },
     {
       "period": "2024-04",
       "series": {
-        "all": 96.23,
-        "food": 95.54,
-        "energy": 96.02,
+        "all": 96.77,
+        "food": 96.01,
+        "energy": 103.37,
         "housing": 92.59
       }
     },
     {
       "period": "2024-05",
       "series": {
-        "all": 96.44,
-        "food": 96.11,
-        "energy": 96.63,
+        "all": 97.05,
+        "food": 96.62,
+        "energy": 99.40,
         "housing": 92.59
       }
     },
     {
       "period": "2024-06",
       "series": {
-        "all": 96.6,
-        "food": 96.36,
-        "energy": 96.92,
+        "all": 97.21,
+        "food": 96.91,
+        "energy": 99.40,
         "housing": 92.59
       }
     },
     {
       "period": "2024-07",
       "series": {
-        "all": 98.02,
-        "food": 96.78,
-        "energy": 97.31,
+        "all": 98.43,
+        "food": 97.31,
+        "energy": 98.68,
         "housing": 92.59
       }
     },
     {
       "period": "2024-08",
       "series": {
-        "all": 98.33,
-        "food": 96.84,
-        "energy": 97.26,
+        "all": 98.79,
+        "food": 97.26,
+        "energy": 97.70,
         "housing": 92.59
       }
     },
     {
       "period": "2024-09",
       "series": {
-        "all": 97.86,
-        "food": 96.45,
-        "energy": 96.91,
+        "all": 97.91,
+        "food": 96.91,
+        "energy": 96.14,
         "housing": 92.59
       }
     },
     {
       "period": "2024-10",
       "series": {
-        "all": 98.34,
-        "food": 96.18,
-        "energy": 96.67,
-        "housing": 92.59
+        "all": 98.52,
+        "food": 96.68,
+        "energy": 97.64,
+        "housing": 95.11
       }
     },
     {
       "period": "2024-11",
       "series": {
-        "all": 97.77,
-        "food": 96.87,
-        "energy": 97.34,
-        "housing": 92.59
+        "all": 97.50,
+        "food": 97.35,
+        "energy": 99.24,
+        "housing": 95.11
       }
     },
     {
       "period": "2024-12",
       "series": {
-        "all": 97.88,
-        "food": 97.35,
-        "energy": 97.77,
-        "housing": 92.59
+        "all": 97.84,
+        "food": 97.77,
+        "energy": 99.25,
+        "housing": 95.11
       }
     },
     {
       "period": "2025-01",
       "series": {
-        "all": 97.6,
-        "food": 97.94,
-        "energy": 98.16,
-        "housing": 97.62
+        "all": 97.09,
+        "food": 98.17,
+        "energy": 101.19,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-02",
       "series": {
-        "all": 98.67,
-        "food": 99.09,
-        "energy": 99.29,
-        "housing": 97.62
+        "all": 98.47,
+        "food": 99.30,
+        "energy": 101.67,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-03",
       "series": {
-        "all": 99.09,
-        "food": 99.09,
-        "energy": 99.33,
-        "housing": 97.62
+        "all": 99.00,
+        "food": 99.34,
+        "energy": 100.33,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-04",
       "series": {
-        "all": 100.1,
-        "food": 99.31,
-        "energy": 99.47,
-        "housing": 97.62
+        "all": 100.76,
+        "food": 99.48,
+        "energy": 100.04,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-05",
       "series": {
-        "all": 99.53,
-        "food": 100.1,
-        "energy": 100.22,
-        "housing": 97.62
+        "all": 99.82,
+        "food": 100.22,
+        "energy": 99.37,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-06",
       "series": {
-        "all": 99.49,
-        "food": 100.59,
-        "energy": 100.54,
-        "housing": 97.62
+        "all": 99.81,
+        "food": 100.54,
+        "energy": 99.91,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-07",
       "series": {
-        "all": 100.87,
-        "food": 101.32,
-        "energy": 101.12,
-        "housing": 102.38
+        "all": 100.94,
+        "food": 101.11,
+        "energy": 99.64,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-08",
       "series": {
-        "all": 101.06,
-        "food": 100.93,
-        "energy": 100.7,
-        "housing": 102.38
+        "all": 101.18,
+        "food": 100.69,
+        "energy": 99.28,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-09",
       "series": {
-        "all": 100.97,
-        "food": 100.56,
-        "energy": 100.48,
-        "housing": 102.38
+        "all": 100.81,
+        "food": 100.47,
+        "energy": 99.97,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-10",
       "series": {
-        "all": 101.37,
-        "food": 100.32,
-        "energy": 100.19,
-        "housing": 102.38
+        "all": 101.52,
+        "food": 100.18,
+        "energy": 99.66,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-11",
       "series": {
-        "all": 100.51,
-        "food": 100.2,
-        "energy": 100.09,
-        "housing": 102.38
+        "all": 100.06,
+        "food": 100.07,
+        "energy": 100.04,
+        "housing": 100.00
       }
     },
     {
       "period": "2025-12",
       "series": {
-        "all": 100.73,
-        "food": 100.55,
-        "energy": 100.41,
-        "housing": 102.38
+        "all": 100.53,
+        "food": 100.41,
+        "energy": 98.89,
+        "housing": 100.00
       }
     },
     {
       "period": "2026-01",
       "series": {
-        "all": 99.99,
-        "food": 99.89,
-        "energy": 99.67,
+        "all": 99.21,
+        "food": 99.66,
+        "energy": 101.53,
         "housing": 102.38
       }
     },
     {
       "period": "2026-02",
       "series": {
-        "all": 101.02,
-        "food": 100.27,
-        "energy": 100.03,
+        "all": 100.70,
+        "food": 100.03,
+        "energy": 101.68,
         "housing": 102.38
       }
     },
     {
       "period": "2026-03",
       "series": {
-        "all": 101.75,
-        "food": 101.04,
-        "energy": 100.98,
+        "all": 101.54,
+        "food": 100.97,
+        "energy": 106.91,
         "housing": 102.38
       }
     },
     {
       "period": "2026-04",
       "series": {
-        "all": 102.91,
-        "food": 100.66,
-        "energy": 100.54,
+        "all": 103.24,
+        "food": 100.54,
+        "energy": 108.06,
         "housing": 102.38
       }
     },
     {
       "period": "2026-05",
       "series": {
-        "all": 103.01,
-        "food": 100.17,
-        "energy": 100.01,
+        "all": 103.21,
+        "food": 100.01,
+        "energy": 109.12,
         "housing": 102.38
       }
     },
     {
       "period": "2026-06",
       "series": {
-        "all": 102.39,
-        "food": 100.12,
-        "energy": 99.98,
+        "all": 102.27,
+        "food": 99.97,
+        "energy": 105.98,
         "housing": 102.38
       }
     },
     {
       "period": "2026-07",
       "series": {
-        "all": 104.07,
-        "food": 100.92,
-        "energy": 100.82,
+        "all": 103.92,
+        "food": 100.82,
+        "energy": 109.34,
         "housing": 106.91
       }
     },
     {
       "period": "2026-08",
       "series": {
-        "all": 104.36,
+        "all": 104.01,
         "food": 99.96,
-        "energy": 99.97,
+        "energy": 110.92,
         "housing": 106.91
       }
     },
     {
       "period": "2026-09",
       "series": {
-        "all": 104.43,
-        "food": 98.71,
-        "energy": 98.75,
+        "all": 103.88,
+        "food": 98.75,
+        "energy": 113.92,
         "housing": 106.91
       }
     },
     {
       "period": "2026-10",
       "series": {
-        "all": 105.13,
-        "food": 99.1,
-        "energy": 99.1,
+        "all": 104.84,
+        "food": 99.09,
+        "energy": 114.12,
         "housing": 106.91
       }
     }
   ],
-  "story": "The Netherlands consumer price index (CPI) has shown an upward trend since 2019, with the overall index reaching 105.13 in October 2026 compared to the base year 2025=100. Food prices have increased from 94.61 in January 2024 to 99.1 in October 2026, while energy prices rose from 95.22 to 99.1 over the same period. Housing costs, represented by both actual rent and imputed rent for owner-occupied homes, have seen the most significant increases, rising from 92.59 to 106.91 over this period."
+  "story": "The Netherlands consumer price index (CPI) has shown varying trends across different expenditure categories from 2019 to 2026. Food prices have increased from 95.22 to 99.09, energy prices from 102.63 to 114.12, and housing costs from 92.59 to 106.91. Overall expenditures have risen from 94.28 to 104.84 over the same period."
 }
